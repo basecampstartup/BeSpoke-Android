@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dim_padding_10dp">
+
+
+    <RelativeLayout
+        android:id="@+id/layoutContent1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvIDLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/id" />
+
+
+        <TextView
+            android:id="@+id/tvIDValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvIDLbl"
+            android:text="55" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent1">
+
+        <TextView
+            android:id="@+id/tvShortDescLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/ShortDescription" />
+
+        <TextView
+            android:id="@+id/tvShortDescValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvShortDescLbl"
+            android:singleLine="true"
+            android:text="Computer not working" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent2">
+
+        <TextView
+            android:id="@+id/tvCategoryLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/Category" />
+
+        <TextView
+            android:id="@+id/tvCategoryValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvCategoryLbl"
+            android:singleLine="true"
+            android:text="Desktop service" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent3">
+
+        <TextView
+            android:id="@+id/tvAffectedAreaLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/AffectedArea" />
+
+        <TextView
+            android:id="@+id/tvAffectedAreaValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvAffectedAreaLbl"
+            android:singleLine="true"
+            android:text="Mouse" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent4">
+
+        <TextView
+            android:id="@+id/tvUserLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/AffectedArea" />
+
+        <TextView
+            android:id="@+id/tvUserValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvUserLbl"
+            android:singleLine="true"
+            android:text="Bob" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent5">
+
+        <TextView
+            android:id="@+id/tvIssueOpenDateLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/IssueOpenDate" />
+
+        <TextView
+            android:id="@+id/tvIssueOpenDateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvIssueOpenDateLbl"
+            android:singleLine="true"
+            android:text="21/11/2016" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent6">
+
+        <TextView
+            android:id="@+id/tvAssignedToLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/AssignedTo" />
+
+        <TextView
+            android:id="@+id/tvAssignedToValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvAssignedToLbl"
+            android:singleLine="true"
+            android:text="John" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutContent8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutContent7">
+
+        <TextView
+            android:id="@+id/tvStatusLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:paddingRight="@dimen/dim_padding_5dp"
+            android:text="@string/Status" />
+
+        <TextView
+            android:id="@+id/tvStatusValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tvStatusLbl"
+            android:singleLine="true"
+            android:text="John" />
+
+    </RelativeLayout>
+
+    <include
+        layout="@layout/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:layout_below="@id/layoutContent8"
+      ></include>
+</RelativeLayout>

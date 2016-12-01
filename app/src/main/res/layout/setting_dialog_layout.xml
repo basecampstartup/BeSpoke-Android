@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dim_padding_20dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvDialogHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dim_padding_5dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/EnablePasscodeMsg" />
+
+    <EditText
+        android:id="@+id/edtPasscode"
+        android:layout_marginTop="@dimen/dim_padding_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter passcode"
+        android:textColorHint="@color/colorTextGray"
+        android:inputType="textPersonName"
+/>
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_marginTop="@dimen/dim_padding_5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorButtonBG"
+        android:text="@string/CancelBtnText" />
+
+
+</LinearLayout>

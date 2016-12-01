@@ -8,4 +8,62 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorTextGray</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="button_style">
+        <item name="android:textSize">@dimen/default_textsize_btn</item>
+        <item name="android:background">@drawable/rounded_rectangle_for_button</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorTextWhite</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="edit_text_style">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/colorTextGray</item>
+        <item name="android:textSize">@dimen/default_textsize_medium</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color_login</item>
+        <item name="android:background">@drawable/rectangle_shape_for_edittext</item>
+        <item name="android:textColor">@color/colorTextGray</item>
+    </style>
+
+    <style name="edit_text_style_for_login">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColorHint">@color/colorTextWhite</item>
+        <item name="android:textSize">@dimen/default_textsize_medium</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_color_login</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorTextWhite</item>
+    </style>
+
+    <style name="AppRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorWhite</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="text_view_style">
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">@dimen/default_textsize_medium</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 </resources>

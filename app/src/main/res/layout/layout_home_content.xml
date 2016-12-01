@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:padding="@dimen/dim_padding_10dp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dim_padding_5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnViewIssues"
+            android:layout_width="@dimen/home_icon_width"
+            android:layout_height="@dimen/home_icon_hight"
+            android:layout_marginRight="@dimen/dim_padding_15dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/LeftPanelViewIssues"
+            android:textColor="@color/colorTextWhite" />
+
+        <Button
+            android:id="@+id/btnViewRequests"
+            android:layout_width="@dimen/home_icon_width"
+            android:layout_height="@dimen/home_icon_hight"
+            android:layout_marginLeft="@dimen/dim_padding_15dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/LeftPanelViewRequests"
+            android:textColor="@color/colorTextWhite" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dim_padding_5dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnDocuments"
+            android:layout_width="@dimen/home_icon_width"
+            android:layout_height="@dimen/home_icon_hight"
+            android:layout_marginRight="@dimen/dim_padding_15dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/LeftPanelDocuments"
+            android:textColor="@color/colorTextWhite" />
+
+        <Button
+            android:id="@+id/btnReports"
+            android:layout_width="@dimen/home_icon_width"
+            android:layout_height="@dimen/home_icon_hight"
+            android:layout_marginLeft="@dimen/dim_padding_15dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/LeftPanelReports"
+            android:textColor="@color/colorTextWhite" />
+    </LinearLayout>
+</LinearLayout>

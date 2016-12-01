@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_new_account"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:orientation="vertical"
+    tools:context="com.bespoke.NewAccountActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:fillViewport="true"
+        android:isScrollContainer="false"
+        android:padding="@dimen/dim_padding_10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_top_30dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <EditText
+                android:id="@+id/edtEmailID"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_30dp"
+                android:gravity="center_vertical"
+                android:hint="@string/CommonEmailID"
+                android:inputType="textEmailAddress"
+                android:textCursorDrawable="@null"
+                android:text="">
+
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:id="@+id/edtPassword"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_15dp"
+                android:hint="@string/EnterPassword"
+                android:inputType="textPassword"
+                android:text=""
+                android:textCursorDrawable="@null"></EditText>
+
+            <EditText
+                android:id="@+id/edtConfirmPassword"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_15dp"
+                android:hint="@string/ReEnterPassword"
+                android:inputType="textPassword"
+                android:textCursorDrawable="@null"></EditText>
+
+            <EditText
+                android:id="@+id/edtUserName"
+                style="@style/edit_text_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_15dp"
+                android:gravity="center_vertical"
+                android:hint="@string/CommonUserName"
+                android:inputType="textEmailAddress"
+                android:text=""
+                android:textCursorDrawable="@null"></EditText>
+
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/radGroupRole"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/AdminText"
+                    android:textColor="@color/colorTextWhite"
+                    android:theme="@style/AppRadioButton" />
+
+                <RadioButton
+                    android:id="@+id/radSuperAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/SuperAdmin"
+                    android:textColor="@color/colorTextWhite"
+                    android:theme="@style/AppRadioButton" />
+
+                <RadioButton
+                    android:id="@+id/radNormalUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/NormalUser"
+                    android:textColor="@color/colorTextWhite"
+                    android:theme="@style/AppRadioButton" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_20dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnCreateAccount"
+                    style="@style/button_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/CreateAccount"
+                    android:textSize="@dimen/default_textsize_btn"></Button>
+
+                <Button
+                    android:id="@+id/btnCancel"
+                    style="@style/button_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_padding_10dp"
+                    android:text="@string/CancelBtnText"></Button>
+
+                <TextView
+                    android:id="@+id/txtAlreadyRegistered"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_padding_10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/AlreadyRegistered"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large"></TextView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

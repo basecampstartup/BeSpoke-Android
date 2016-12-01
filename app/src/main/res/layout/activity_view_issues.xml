@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_issues"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lstIssues"
+        android:layout_below="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!--  <include layout="@layout/issue_list_item" />
+
+      <include layout="@layout/issue_list_item" />
+      <include layout="@layout/issue_list_item" />
+      <include layout="@layout/issue_list_item" />
+      <include layout="@layout/issue_list_item" />-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@color/colorPrimaryDark"
+        android:src="@android:drawable/ic_input_add" />
+
+</RelativeLayout>

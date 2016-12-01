@@ -1,3 +1,81 @@
 <resources>
     <string name="app_name">BeSpoke</string>
+
+    <string name="CommonEmailID">Email ID</string>
+    <string name="CommonPassword">Password</string>
+    <string name="CommonLogin">Login</string>
+    <string name="ForgotPassword"><u>Forgot Password?</u></string>
+    <string name="NewUser">New User</string>
+    <string name="EnterPassword">Enter Password</string>
+    <string name="ReEnterPassword">Re-enter Password</string>
+    <string name="CommonUserName">User Name</string>
+
+    <string name="SignUpEmailRequired">Enter a valid email address.</string>
+    <string name="SignUpPasswordRequired">Enter password</string>
+    <string name="SignUpRePasswordRequired">Re-enter password</string>
+    <string name="SignUpUserNameRequired">Enter User Name</string>
+    <string name="MessageNoInternetConnection">Please check internet connection.</string>
+
+    <string name="SignUpPasswordsNotMatch">Password and Re-enter Password Not Match</string>
+    <string name="AdminText">Admin</string>
+    <string name="NormalUser">Normal User</string>
+    <string name="SuperAdmin">Super Admin</string>
+    <string name="CancelBtnText">Cancel</string>
+    <string name="CreateAccount">Create Account</string>
+    <string name="ResetPassword">Reset Password</string>
+    <string name="AlreadyRegistered"><u>Already Registered? Login here</u></string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <string name="LeftPanelHome">Home</string>
+    <string name="LeftPanelViewIssues">View Issues</string>
+    <string name="LeftPanelViewRequests">View Requests</string>
+    <string name="LeftPanelDocuments">Documents</string>
+    <string name="LeftPanelReports">Reports</string>
+    <string name="LeftPanelCategory">Category</string>
+    <string name="LeftPanelSettings">Settings</string>
+    <string name="LeftPanelLogout">Logout</string>
+    <string name="MessagePleaseWait">Please wait...</string>
+
+    <string name="IssuesDetail">View Details</string>
+    <string name="id">ID:</string>
+    <string name="idtxt">Id</string>
+    <string name="ShortDescription">Short Description:</string>
+    <string name="ShortDescriptiontxt">Short Description</string>
+    <string name="Description">Description:</string>
+    <string name="Descriptiontxt">Description</string>
+    <string name="Category">Category:</string>
+    <string name="Categorytxt">Category</string>
+    <string name="AffectedArea">Affected Area:</string>
+    <string name="AffectedAreatxt">Affected Area</string>
+    <string name="User">User:</string>
+    <string name="Usertxt">User</string>
+    <string name="IssueOpenDate">Issue Open Date:</string>
+    <string name="IssueOpenDatetxt">Issue Open Date</string>
+    <string name="AssignedTo">Assigned To:</string>
+    <string name="AssignedTotxt">Assigned To</string>
+    <string name="Status">Status:</string>
+    <string name="TicketStatus">Ticket Status:</string>
+    <string name="TicketStatustxt">Ticket Status</string>
+    <string name="CommonOK">OK</string>
+    <string name="RegisterdSuccessfully">User Registerd Successfully!</string>
+
+    <string name="SelectCategory">Select Category:</string>
+
+    <string name="SubCategory">SubCategory:</string>
+    <string name="SubCategoryHint">Sub Category</string>
+    <string name="EnablePasscodeMsg">Enter Passcode to Enable the Touch Id.</string>
+    <string name="DisablePasscodeMsg">Enter Passcode to Disable the Touch Id.</string>
+    <string name="touchEnabled">Touch Enabled</string>
+
+    <string name="CloseTicketBtn">Close Ticket</string>
+    <string name="EmailUserBtn">Email User</string>
+    <string name="AddIssue">Add Issue</string>
+    <string name="SubmitTicketBtn">Submit Ticket</string>
+    <string name="EmailBtn">Email</string>
 </resources>
