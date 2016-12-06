@@ -1,6 +1,7 @@
 package com.bespoke.servercommunication;
 
 import com.bespoke.Model.Category;
+import com.bespoke.Model.SubCategoryModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.Model.UserModel;
 
@@ -69,7 +70,7 @@ public class ResponseParser {
 
 
     /**
-     * Method for parse login response.
+     * Method for parse ticket response.
      *
      * @param object
      * @return
@@ -111,4 +112,76 @@ public class ResponseParser {
         }
         return ticketList;
     }
+
+
+
+    /**
+     * Method for parse Subcategory response.
+     *
+     * @param object
+     * @return
+     */
+    public static ArrayList<SubCategoryModel> parseSubCategoryResponse(Object object) {
+        JSONArray categoriesArray = null;
+        ArrayList<SubCategoryModel> subCategoryList=new ArrayList<>();
+        try {
+            JSONObject responseJsonObject=new JSONObject(object.toString());
+            categoriesArray = responseJsonObject.getJSONArray("subcategories");
+            for(int i=0;i<categoriesArray.length();i++)
+            {
+                JSONObject categoryObject=categoriesArray.getJSONObject(i);
+                JSONObject subCategoryObject1=categoryObject.getJSONObject("subcategory");
+                int catId=subCategoryObject1.getInt("cat_id");
+                int subCatId=subCategoryObject1.getInt("sub_cat_id");
+                String catName=subCategoryObject1.getString("subcategory");
+                SubCategoryModel subCategoryModel=new SubCategoryModel();
+                subCategoryModel.setCat_id(catId);
+                subCategoryModel.setSub_cat_id(subCatId);
+                subCategoryModel.setSubcategory(catName);
+                subCategoryList.add(subCategoryModel);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return subCategoryList;
+    }
+
+
+    /**
+     * Method for parse login response.
+     *
+     * @param object
+     * @return
+     */
+    public static ArrayList<UserModel> parseUserResponse(Object object) {
+        JSONArray usersArray = null;
+        JSONObject jsonObj = null;
+        UserModel model = new UserModel();
+        ArrayList<UserModel> userList=new ArrayList<>();
+        try {
+            JSONObject responseJsonObject=new JSONObject(object.toString());
+            usersArray = responseJsonObject.getJSONArray("users");
+
+            for(int i=0;i<usersArray.length();i++)
+            {
+                JSONObject userObject=usersArray.getJSONObject(i);
+                JSONObject userObject1=userObject.getJSONObject("user");
+                String userId=userObject1.getString("user_id");
+                String userType=userObject1.getString("usertype");
+                String email=userObject1.getString("email");
+                String username=userObject1.getString("username");
+                UserModel userModel=new UserModel();
+                userModel.setUser_id(userId);
+                userModel.setUsertype(userType);
+                userModel.setEmail(email);
+                userModel.setUserName(username);
+                userList.add(userModel);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
 }

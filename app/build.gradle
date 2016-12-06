@@ -29,4 +29,6 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'cz.msebera.android:httpclient:4.4.1.2'
     testCompile 'junit:junit:4.12'
+    apply plugin: 'com.google.gms.google-services'
+
 }

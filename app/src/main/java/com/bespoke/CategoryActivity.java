@@ -153,14 +153,12 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
-
         CategoryListDialogAdapter applianceListDialogAdapter = new CategoryListDialogAdapter(CategoryActivity.this, categoryList);
         lv.setAdapter(applianceListDialogAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Category  selectedCategory = categoryList.get(position);
-                //    Toast.makeText(AddScheduleTaskActivity.this, "Item :" + selectedAppliance, Toast.LENGTH_SHORT).show();
                 tvCategory.setText(selectedCategory.getCategory());
                 dialog.dismiss();
             }
@@ -168,7 +166,7 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         dialog.setContentView(view);
         dialog.show();
 
-
     }
+
 
 }

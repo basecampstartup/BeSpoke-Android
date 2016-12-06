@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "486394059611",
+    "firebase_url": "https://bespoke-1484d.firebaseio.com",
+    "project_id": "bespoke-1484d",
+    "storage_bucket": "bespoke-1484d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486394059611:android:47a091a61184fe82",
+        "android_client_info": {
+          "package_name": "com.bespoke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486394059611-qs7fcafksqi5mkiqgo8p1u3ce6pfi2n8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVU8E2XlS53L0ahSRPqavikVi21MLCQbA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

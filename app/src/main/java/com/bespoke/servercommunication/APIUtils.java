@@ -19,6 +19,7 @@ public class APIUtils {
     public static final String METHOD_GET_USER_BY_TYPE = "GetUserByUserType";
     public static final String METHOD_GET_ALL_CATEGORY = "GetAllCategory";
     public static final String METHOD_GET_ALL_ISSUES = "GetAllIssue";
+    public static final String METHOD_GET_ALL_SUB_CATEGORY = "GetAllSubCategory";
 
 
     public static final String PARAM_EMAIL = "email";

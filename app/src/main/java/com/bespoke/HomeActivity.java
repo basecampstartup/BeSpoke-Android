@@ -163,6 +163,8 @@ public class HomeActivity extends AppCompatActivity
                /* Intent intent = new Intent(mContext, HomeActivity.class);
                 startActivity(intent);*/
                 finish();
+                startActivity(new Intent(mContext, LoginActivity.class));
+
                 break;
 
             case R.id.btnViewIssues:

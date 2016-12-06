@@ -33,7 +33,6 @@ public class CommunicatorNew {
         this.mContext = mContext;
         this.params = params;
         this.methodName = methodName;
-
         //network call for api.
         callAPIMethod(methodType, methodName);
     }
