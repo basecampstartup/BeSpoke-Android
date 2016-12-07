@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
+import android.text.Spanned;
 
 import com.bespoke.R;
 
@@ -11,6 +12,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by admin on 11/23/2016.
@@ -85,4 +90,84 @@ public class Utils {
         alertDialog.show();
     }
 
+
+    /**
+     * @param context
+     * @param title
+     * @param message
+     */
+    public static void alertDialog(final Context context, String title, String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        // set title
+        alertDialogBuilder.setTitle(title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        //loading.setVisibility(View.INVISIBLE);
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        try {
+            // show it
+            alertDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Method to return formatted date according to locale
+     *
+     * @param context
+     * @param mDate
+     * @param dateStyle
+     * @return
+     */
+    public static String formatDate(Context context, Date mDate, DateStyleEnum.StyleType dateStyle) {
+        switch (dateStyle) {
+            case SHORT:
+                DateFormat shortDateFormat = DateFormat.getDateInstance(DateFormat.SHORT, getSysLocale(context));
+                return shortDateFormat.format(mDate);
+            case MEDIUM:
+                DateFormat mediumDateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, getSysLocale(context));
+                return mediumDateFormat.format(mDate);
+            case LONG:
+                DateFormat longDateFormat = DateFormat.getDateInstance(DateFormat.LONG, getSysLocale(context));
+                return longDateFormat.format(mDate);
+            case DAY_MONTH:
+                return getDayMonthFormat(context, mDate);
+            default:
+                return "";
+        }
+    }
+    /**
+     * method to return system locale
+     *
+     * @return
+     */
+    private static Locale getSysLocale(Context context) {
+        return context.getResources().getConfiguration().locale;
+    }
+
+    /**
+     * method to return birth day
+     *
+     * @param mDate
+     * @return
+     */
+    private static String getDayMonthFormat(Context context, Date mDate) {
+        DateFormat dayMonthDateFormat = DateFormat.getDateInstance(DateFormat.LONG, getSysLocale(context));
+        String bDate = dayMonthDateFormat.format(mDate);
+        //extract year
+        SimpleDateFormat formatYear = new SimpleDateFormat("yyyy");
+        String currentYear = formatYear.format(mDate);
+        String dateString = bDate.replace(currentYear, "");
+        return dateString.replace(",", "");
+    }
 }

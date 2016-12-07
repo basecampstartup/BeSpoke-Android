@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.R;
+import com.bespoke.utils.TicketStatus;
+
 import java.util.ArrayList;
 
 /**
@@ -64,11 +66,11 @@ public class IssueListAdapter extends BaseAdapter {
         viewHolder.tvIssueID.setText(ticketModels.get(position).getTicket_id());
         viewHolder.tvDescription.setText(ticketModels.get(position).getShortdesc());
         viewHolder.tvCategory.setText(ticketModels.get(position).getCategoryName());
-        viewHolder.tvAffectedArea.setText(ticketModels.get(position).getCategoryName());
-        viewHolder.tvUser.setText(ticketModels.get(position).getTicket_id());
+        viewHolder.tvAffectedArea.setText(ticketModels.get(position).getSubCategoryName());
+        viewHolder.tvUser.setText(ticketModels.get(position).getUserName());
         viewHolder.tvOpenDate.setText(ticketModels.get(position).getTicketopendate());
-        viewHolder.tvAssignedTo.setText(ticketModels.get(position).getAssignedto());
-        viewHolder.tvStatus.setText(ticketModels.get(position).getAssignedto());
+        viewHolder.tvAssignedTo.setText(ticketModels.get(position).getAssignedToName());
+        viewHolder.tvStatus.setText(TicketStatus.keyToEnum(ticketModels.get(position).getTicketstatus()).toString());
 
         return convertView;
     }

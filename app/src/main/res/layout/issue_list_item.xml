@@ -120,7 +120,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/AffectedArea" />
+            android:text="@string/User" />
 
         <TextView
             android:id="@+id/tvUserValue"

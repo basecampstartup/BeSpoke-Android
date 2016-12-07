@@ -92,7 +92,7 @@ public class ResponseParser {
                 ticketModel.setUser_id(ticketObject1.getString("user_id"));
                 ticketModel.setTicketopendate(ticketObject1.getString("ticketopendate"));
                 ticketModel.setAssignedto(ticketObject1.getString("assignedto"));
-                ticketModel.setTicketstatus(ticketObject1.getString("ticketstatus"));
+                ticketModel.setTicketstatus(ticketObject1.getInt("ticketstatus"));
                 ticketModel.setTickettype(ticketObject1.getString("tickettype"));
                 ticketModel.setCat_id(ticketObject1.getString("cat_id"));
                 ticketModel.setSubcat_id(ticketObject1.getString("subcat_id"));

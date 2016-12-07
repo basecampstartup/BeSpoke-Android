@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
+import com.bespoke.utils.Logger;
 import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
@@ -15,8 +16,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by admin on 11/15/2016.
@@ -40,10 +43,14 @@ public class CommunicatorNew {
     public void callAPIMethod(int method, String methodName) {
         switch (method) {
             case Request.Method.GET:
-                new NetworkAsyncTask(APIUtils.BASE_URL, Commons.GET, methodName, null).
+               /* String paramString=prepareRequestObject().toString();
+                if(TextUtils.isEmpty(paramString))paramString="";*/
+                new NetworkAsyncTask(APIUtils.BASE_URL, Commons.GET, methodName,getParamsString(params)).
                         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (APIRequestCallback) mContext);
                 break;
             case Request.Method.POST:
+               /* String paramStringnew=prepareRequestObject().toString();
+                if(TextUtils.isEmpty(paramStringnew)){paramStringnew="";}*/
                 new NetworkAsyncTask(APIUtils.BASE_URL, Commons.POST, methodName, prepareRequestObject().toString()).
                         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (APIRequestCallback) mContext);
                 break;
@@ -74,6 +81,15 @@ public class CommunicatorNew {
             return jsonObject;
         }
         if (methodName.equalsIgnoreCase(APIUtils.METHOD_FORGOT_PASSWORD)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_GET_USER_BY_TYPE)) {
             try {
                 jsonObject = new JSONObject(params);
             } catch (Exception e) {
@@ -131,7 +147,9 @@ public class CommunicatorNew {
                     //For GET
                     case Commons.GET:
                         try {
-                            url = new URL(APIUtils.BASE_URL + APIUtils.METHOD_NAME + "=" + methodName);
+                            String urlString=APIUtils.BASE_URL + APIUtils.METHOD_NAME + "=" + methodName + jsonString;
+                            Log.i("URL",urlString);
+                            url = new URL(urlString);
                             urlConn = (HttpURLConnection) url.openConnection();
                             urlConn.setRequestMethod("GET");
                             urlConn.setDoInput(true);
@@ -213,5 +231,23 @@ public class CommunicatorNew {
             }
             return null;
         }
+    }
+
+    private String getParamsString(HashMap<String, String> map) {
+        StringBuilder sb = new StringBuilder();
+        if(map.size()>0){
+            sb.append("&");
+            List items = new ArrayList(map.keySet());
+            for (int i = 0; i < items.size(); i++) {
+                sb.append(items.get(i));
+                sb.append("=");
+                sb.append(map.get(items.get(i)));
+                if (i < (items.size() - 1)) {
+                    sb.append("&");
+                }
+            }
+        }
+        Logger.i(TAG, "ParamsString: "+sb.toString());
+        return sb.toString();
     }
 }

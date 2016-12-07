@@ -121,9 +121,16 @@
                 android:background="@null"/>
 
             <include layout="@layout/divider" />
-
-            <EditText
-                android:id="@+id/edtIssueOpenDate"
+            <TextView
+                android:id="@+id/tvSelectIssueOpenDateLbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:text="@string/SelectIssueOpenDatetxt"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/default_textsize_large" />
+            <TextView
+                android:id="@+id/tvIssueOpenDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_10dp"

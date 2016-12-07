@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bespoke.Model.TicketModel;
+import com.bespoke.utils.TicketStatus;
 
 public class IssueDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private Toolbar mToolbar;
@@ -45,9 +46,9 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         tvCategoryValue.setText(model.getCategoryName());
         tvAffectedAreaValue.setText(model.getSubCategoryName());
         tvUserValue.setText(model.getUserName());
-        tvIssueOpenDateValue.setText(model.getCreateddate());
-        tvAssignedToValue.setText(model.getAssignedto());
-        tvStatusValue.setText(model.getTicketstatus());
+        tvIssueOpenDateValue.setText(model.getTicketopendate());
+        tvAssignedToValue.setText(model.getAssignedToName());
+        tvStatusValue.setText(TicketStatus.keyToEnum(model.getTicketstatus()).toString());
     }
 
     /**

@@ -57,6 +57,7 @@
     <string name="Usertxt">User</string>
     <string name="IssueOpenDate">Issue Open Date:</string>
     <string name="IssueOpenDatetxt">Issue Open Date</string>
+    <string name="SelectIssueOpenDatetxt">Select Issue Open Date:</string>
     <string name="AssignedTo">Assigned To:</string>
     <string name="AssignedTotxt">Assigned To</string>
     <string name="Status">Status:</string>
@@ -78,4 +79,7 @@
     <string name="AddIssue">Add Issue</string>
     <string name="SubmitTicketBtn">Submit Ticket</string>
     <string name="EmailBtn">Email</string>
+
+    <string name="EnterShortDescription">Enter ShortDescription!</string>
+    <string name="EnterDescription">Enter Description!</string>
 </resources>

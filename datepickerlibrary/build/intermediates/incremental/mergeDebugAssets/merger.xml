@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\BeSpoke Workspace\BeSpoke-Android\datepickerlibrary\src\main\assets"><file name="fonts/Roboto-Medium.ttf" path="E:\BeSpoke Workspace\BeSpoke-Android\datepickerlibrary\src\main\assets\fonts\Roboto-Medium.ttf"/></source><source path="E:\BeSpoke Workspace\BeSpoke-Android\datepickerlibrary\build\generated\assets\shaders\debug"/></dataSet><dataSet config="debug"><source path="E:\BeSpoke Workspace\BeSpoke-Android\datepickerlibrary\src\debug\assets"/></dataSet></merger>

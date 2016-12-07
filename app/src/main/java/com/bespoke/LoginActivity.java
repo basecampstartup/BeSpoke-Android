@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void run() {
                             UserModel model= ResponseParser.parseLoginResponse(responseObject);
-                            Toast.makeText(mContext, "You are Logged-In Successfully!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, "You are Logged-In Successfully!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         }
