@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/background"
     tools:context="com.bespoke.MainActivity"
     android:gravity="center">
 
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/logonew" />
 
     <TextView
         android:id="@+id/txtAppName"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/imgLogo"
         android:gravity="center_vertical|center_horizontal"
-        android:paddingTop="@dimen/margin_10dp"
         android:text="@string/app_name"
+        android:visibility="gone"
         android:textColor="@color/colorTextWhite"
         android:textSize="@dimen/splash_text_size"></TextView>
 </RelativeLayout>

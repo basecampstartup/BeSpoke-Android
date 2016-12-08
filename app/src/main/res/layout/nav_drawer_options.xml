@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorDrawerGray">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,28 +16,32 @@
             <include
                 android:id="@+id/drawer_header"
                 layout="@layout/nav_header_home"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
+                android:visibility="visible"></include>
 
             <LinearLayout
                 android:id="@+id/llHomePanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_padding_10dp"
                 android:layout_marginLeft="@dimen/dim_padding_15dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivDirectory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_icon" />
 
                 <TextView
                     android:id="@+id/tvHome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dim_padding_5dp"
-                    android:layout_marginTop="@dimen/dim_padding_5dp"
-                    android:padding="@dimen/dim_padding_10dp"
-                    android:text="@string/LeftPanelHome"
+                    style="@style/text_view_style"
                     android:layout_marginLeft="@dimen/dim_padding_5dp"
+                    android:padding="@dimen/dim_padding_10dp"
                     android:textColor="@color/colorTextWhite"
-                    android:textSize="@dimen/default_textsize_medium"></TextView>
+                 android:text="@string/LeftPanelHome"></TextView>
             </LinearLayout>
 
             <!--<View
@@ -54,7 +58,11 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
+                <ImageView
+                    android:id="@+id/ivViewIssue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/view_icon" />
 
                 <TextView
                     android:id="@+id/tvViewIssues"
@@ -62,6 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_padding_5dp"
+                    android:textColor="@color/colorWhite"
                     android:padding="@dimen/dim_padding_10dp"
                     android:text="@string/LeftPanelViewIssues"></TextView>
             </LinearLayout>
@@ -75,6 +84,11 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:id="@+id/ivViewRequests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/request_icon" />
 
 
                 <TextView
@@ -98,6 +112,11 @@
                 android:orientation="horizontal">
 
 
+                <ImageView
+                    android:id="@+id/ivDocuments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/document_icon" />
                 <TextView
                     android:id="@+id/tvDocuments"
                     style="@style/text_view_style"
@@ -118,7 +137,11 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
+                <ImageView
+                    android:id="@+id/ivReports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/viewrequest_icon" />
 
                 <TextView
                     android:id="@+id/tvReports"
@@ -140,7 +163,11 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
+                <ImageView
+                    android:id="@+id/ivCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/category_icon" />
 
                 <TextView
                     android:id="@+id/tvCategory"
@@ -162,6 +189,13 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:id="@+id/ivSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/setting_icon" />
+
+
                 <TextView
                     android:id="@+id/tvSettings"
                     style="@style/text_view_style"
@@ -182,7 +216,12 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-
+                <ImageView
+                    android:id="@+id/ivLogoutPanel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logout_icon"
+                    />
                 <TextView
                     android:id="@+id/tvLogout"
                     style="@style/text_view_style"

@@ -12,4 +12,8 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTextGray">#535372</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorDrawerGray">#555555</color>
+    <color name="colorDrawerTop">#302F34</color>
+    <color name="colorDrawerTapBlue">#23A2B5</color>
+
 </resources>

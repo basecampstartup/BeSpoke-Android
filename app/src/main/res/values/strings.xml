@@ -4,7 +4,7 @@
     <string name="CommonEmailID">Email ID</string>
     <string name="CommonPassword">Password</string>
     <string name="CommonLogin">Login</string>
-    <string name="ForgotPassword"><u>Forgot Password?</u></string>
+    <string name="ForgotPassword"><u>Forgot Password?*</u></string>
     <string name="NewUser">New User</string>
     <string name="EnterPassword">Enter Password</string>
     <string name="ReEnterPassword">Re-enter Password</string>
@@ -82,4 +82,12 @@
 
     <string name="EnterShortDescription">Enter ShortDescription!</string>
     <string name="EnterDescription">Enter Description!</string>
+
+    <string name="DashboardIssues">Issues</string>
+    <string name="DashboardRequest">Request</string>
+    <string name="DashboardDocuments">Documents</string>
+    <string name="DashboardReports">Reports</string>
+
+
+
 </resources>

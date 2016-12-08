@@ -4,7 +4,7 @@
     android:id="@+id/activity_new_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
+    android:background="@drawable/background"
     android:orientation="vertical"
     tools:context="com.bespoke.NewAccountActivity">
 
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_top_30dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/logonew" />
 
             <EditText
                 android:id="@+id/edtEmailID"
@@ -92,7 +92,7 @@
                     android:id="@+id/radAdmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
+
                     android:text="@string/AdminText"
                     android:textColor="@color/colorTextWhite"
                     android:theme="@style/AppRadioButton" />
@@ -118,21 +118,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dim_padding_20dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <Button
                     android:id="@+id/btnCreateAccount"
                     style="@style/button_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="220dp"
+                    android:layout_height="50dp"
                     android:text="@string/CreateAccount"
                     android:textSize="@dimen/default_textsize_btn"></Button>
 
                 <Button
                     android:id="@+id/btnCancel"
                     style="@style/button_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="220dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="@dimen/dim_padding_10dp"
                     android:text="@string/CancelBtnText"></Button>
 

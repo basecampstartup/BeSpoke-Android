@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@drawable/background"
     android:padding="@dimen/dim_padding_10dp"
     android:orientation="vertical">
 
@@ -16,13 +16,25 @@
 
         android:orientation="horizontal">
 
-        <Button
+        <ImageView
             android:id="@+id/btnViewIssues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dashboard_issues" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/btnViewIssues1"
             android:layout_width="@dimen/home_icon_width"
             android:layout_height="@dimen/home_icon_hight"
             android:layout_marginRight="@dimen/dim_padding_15dp"
             android:background="@color/colorPrimary"
             android:text="@string/LeftPanelViewIssues"
+            android:visibility="gone"
             android:textColor="@color/colorTextWhite" />
 
         <Button

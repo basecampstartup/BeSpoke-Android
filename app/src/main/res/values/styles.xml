@@ -12,8 +12,8 @@
     <style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">@color/colorBackground</item>
         <item name="colorAccent">@color/colorTextGray</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
@@ -49,21 +49,31 @@
     <style name="AppRadioButton" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/colorWhite</item>
         <item name="colorControlActivated">@color/colorPrimary</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        //Added for slider
+        <item name="colorPrimary">@color/colorBackground</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorTextGray</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="colorPrimary">@color/colorBackground</item>
+    <item name="colorPrimaryDark">@color/colorBlack</item>
+    <item name="colorAccent">@color/colorTextGray</item>/>
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="text_view_style">
         <item name="android:singleLine">true</item>
-        <item name="android:textSize">@dimen/default_textsize_medium</item>
+        <item name="android:textSize">@dimen/default_textsize_large</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>
