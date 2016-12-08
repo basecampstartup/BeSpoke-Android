@@ -15,7 +15,16 @@
         android:gravity="center"
 
         android:orientation="horizontal">
-
+        <LinearLayout
+            android:id="@+id/llViewIssues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dim_padding_20dp"
+            android:layout_marginRight="@dimen/dim_padding_20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
         <ImageView
             android:id="@+id/btnViewIssues"
             android:layout_width="wrap_content"
@@ -25,26 +34,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text="@string/DashboardIssues"
+            android:textColor="@color/colorWhite"/>
 
-        <Button
-            android:id="@+id/btnViewIssues1"
-            android:layout_width="@dimen/home_icon_width"
-            android:layout_height="@dimen/home_icon_hight"
-            android:layout_marginRight="@dimen/dim_padding_15dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/LeftPanelViewIssues"
-            android:visibility="gone"
-            android:textColor="@color/colorTextWhite" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/btnViewRequests"
-            android:layout_width="@dimen/home_icon_width"
-            android:layout_height="@dimen/home_icon_hight"
-            android:layout_marginLeft="@dimen/dim_padding_15dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/LeftPanelViewRequests"
-            android:textColor="@color/colorTextWhite" />
+
+        <LinearLayout
+            android:id="@+id/llViewRequests"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dim_padding_20dp"
+            android:layout_marginRight="@dimen/dim_padding_20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/btnViewRequests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dashboard_request" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/DashboardRequest"
+                android:textColor="@color/colorWhite"/>
+
+            </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -54,23 +73,50 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <Button
+        <LinearLayout
+            android:id="@+id/llDocuments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dim_padding_20dp"
+            android:layout_marginRight="@dimen/dim_padding_20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+        <ImageView
             android:id="@+id/btnDocuments"
-            android:layout_width="@dimen/home_icon_width"
-            android:layout_height="@dimen/home_icon_hight"
-            android:layout_marginRight="@dimen/dim_padding_15dp"
-            android:background="@color/colorPrimary"
-            android:text="@string/LeftPanelDocuments"
-            android:textColor="@color/colorTextWhite" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dashboard_document" />
 
-        <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/LeftPanelDocuments"
+            android:textColor="@color/colorWhite"/>
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llReports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dim_padding_20dp"
+            android:layout_marginRight="@dimen/dim_padding_20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        <ImageView
             android:id="@+id/btnReports"
-            android:layout_width="@dimen/home_icon_width"
-            android:layout_height="@dimen/home_icon_hight"
-            android:layout_marginLeft="@dimen/dim_padding_15dp"
-            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dashboard_reports" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/LeftPanelReports"
-            android:textColor="@color/colorTextWhite" />
+            android:textColor="@color/colorWhite"/>
+            </LinearLayout>
     </LinearLayout>
 </LinearLayout>

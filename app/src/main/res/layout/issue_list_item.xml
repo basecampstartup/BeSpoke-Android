@@ -18,14 +18,18 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:textColor="@color/colorBlack"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/id" />
+            android:text="@string/id"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvIDValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvIDLbl"
+            android:textSize="@dimen/issue_list_text_size"
+            android:textColor="@color/colorBlack"
             android:text="55" />
     </RelativeLayout>
 
@@ -42,16 +46,20 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:textColor="@color/colorBlack"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/ShortDescription" />
+            android:text="@string/ShortDescription"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvShortDescValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvShortDescLbl"
+            android:textColor="@color/colorBlack"
             android:singleLine="true"
-            android:text="Computer not working" />
+            android:text="Computer not working"
+            android:textSize="@dimen/issue_list_text_size"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -67,16 +75,20 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:textColor="@color/colorBlack"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/Category" />
+            android:text="@string/Category"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvCategoryValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvCategoryLbl"
+            android:textColor="@color/colorBlack"
             android:singleLine="true"
-            android:text="Desktop service" />
+            android:text="Desktop service"
+            android:textSize="@dimen/issue_list_text_size"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -91,17 +103,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:textColor="@color/colorBlack"
             android:layout_alignParentTop="true"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/AffectedArea" />
+            android:text="@string/AffectedArea"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvAffectedAreaValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvAffectedAreaLbl"
+            android:textColor="@color/colorBlack"
             android:singleLine="true"
-            android:text="Mouse" />
+            android:text="Mouse"
+            android:textSize="@dimen/issue_list_text_size"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -117,16 +133,20 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:textColor="@color/colorBlack"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/User" />
+            android:text="@string/User"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvUserValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvUserLbl"
+            android:textColor="@color/colorBlack"
             android:singleLine="true"
-            android:text="Bob" />
+            android:text="Bob"
+            android:textSize="@dimen/issue_list_text_size"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -141,17 +161,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:textColor="@color/colorBlack"
             android:layout_alignParentTop="true"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/IssueOpenDate" />
+            android:text="@string/IssueOpenDate"
+            android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
             android:id="@+id/tvIssueOpenDateValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvIssueOpenDateLbl"
+            android:textColor="@color/colorBlack"
             android:singleLine="true"
-            android:text="21/11/2016" />
+            android:text="21/11/2016"
+            android:textSize="@dimen/issue_list_text_size"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -168,7 +192,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/AssignedTo" />
+            android:text="@string/AssignedTo"
+            android:textSize="@dimen/issue_list_text_size"
+            android:textColor="@color/colorBlack"/>
 
         <TextView
             android:id="@+id/tvAssignedToValue"
@@ -176,7 +202,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvAssignedToLbl"
             android:singleLine="true"
-            android:text="John" />
+            android:text="John"
+            android:textSize="@dimen/issue_list_text_size"
+            android:textColor="@color/colorBlack"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -193,7 +221,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:paddingRight="@dimen/dim_padding_5dp"
-            android:text="@string/Status" />
+            android:text="@string/Status"
+            android:textSize="@dimen/issue_list_text_size"
+            android:textColor="@color/colorBlack"/>
 
         <TextView
             android:id="@+id/tvStatusValue"
@@ -201,7 +231,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvStatusLbl"
             android:singleLine="true"
-            android:text="John" />
+            android:text="John"
+            android:textSize="@dimen/issue_list_text_size"
+            android:textColor="@color/colorBlack"/>
 
     </RelativeLayout>
 
@@ -209,7 +241,11 @@
         layout="@layout/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_below="@id/layoutContent8"
+
       ></include>
+
+
+
 </RelativeLayout>

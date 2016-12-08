@@ -19,7 +19,8 @@
         android:id="@+id/lstIssues"
         android:layout_below="@+id/container_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@null" />
 
     <!--  <include layout="@layout/issue_list_item" />
 

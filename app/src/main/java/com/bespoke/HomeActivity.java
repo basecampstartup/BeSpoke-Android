@@ -28,7 +28,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView tvHome, tvViewIssues, tvViewRequests, tvDocuments, tvReports, tvCategory, tvSettings, tvLogout;
     private LinearLayout llHomePanel, llViewIssues, llViewRequests, llDocuments,
             llReports, llCategory, llSettings, llLogout;
-    Button btnViewIssues,btnViewRequests,btnDocuments,btnReports;
+    ImageView btnViewIssues,btnViewRequests,btnDocuments,btnReports;
     private DrawerLayout drawer;
     private Context mContext;
     @Override
@@ -88,10 +88,10 @@ public class HomeActivity extends AppCompatActivity
         llSettings = (LinearLayout) findViewById(R.id.llSettings);
         llLogout = (LinearLayout) findViewById(R.id.llLogoutPanel);
 
-        btnViewIssues = (Button) findViewById(R.id.btnViewIssues);
-        btnViewRequests = (Button) findViewById(R.id.btnViewRequests);
-        btnDocuments = (Button) findViewById(R.id.btnDocuments);
-        btnReports = (Button) findViewById(R.id.btnReports);
+        btnViewIssues = (ImageView) findViewById(R.id.btnViewIssues);
+        btnViewRequests = (ImageView) findViewById(R.id.btnViewRequests);
+        btnDocuments = (ImageView) findViewById(R.id.btnDocuments);
+        btnReports = (ImageView) findViewById(R.id.btnReports);
 
         llHomePanel.setOnClickListener(this);
         llViewIssues.setOnClickListener(this);
