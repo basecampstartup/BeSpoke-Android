@@ -24,7 +24,7 @@
     <string name="CreateAccount">Create Account</string>
     <string name="ResetPassword">Reset Password</string>
     <string name="AlreadyRegistered"><u>Already Registered? Login here</u></string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">DashBoard</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -79,7 +79,7 @@
     <string name="AddIssue">Add Issue</string>
     <string name="SubmitTicketBtn">Submit Ticket</string>
     <string name="EmailBtn">Email</string>
-
+    <string name="AddRequest">Add Request</string>
     <string name="EnterShortDescription">Enter ShortDescription!</string>
     <string name="EnterDescription">Enter Description!</string>
 
@@ -88,6 +88,33 @@
     <string name="DashboardDocuments">Documents</string>
     <string name="DashboardReports">Reports</string>
 
+
+    <string name="SelectCategoryAlert">Please Select Category!</string>
+    <string name="SelectAffectedAreaAlert">Please Select Affected Area!</string>
+    <string name="SelectTicketAlert">Please Select Ticket Status!</string>
+    <string name="SelectAssignedToAlert">Please Select Assigned To User!</string>
+    <string name="Alert">Alert!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="RoleAlert">Please select your Role!</string>
+    <string name="SomethingWentWrong">Something went wrong please try again later!</string>
+    <string name="ErrorTitle">Error!</string>
+    <string name="Message">Message</string>
+    <string name="title_activity_chart">ChartActivity</string>
+    <string name="CommonYes">Yes</string>
+    <string name="CommonNo">No</string>
+    <string name="ConfirmCloseTicket">Do you want to close this Ticket!</string>
+
+    <string name="ErrorInCreatingTicket">Error in Creating issue please try again later!</string>
+    <string name="IssueCreatedSuccessfully">Your issue crreated successfully!</string>
+    <string name="RequestCreatedSuccessfully">Your Request crreated successfully!</string>
+    <string name="ErrorInUpdateTicket">Error in Updating Ticket status please try later!</string>
+    <string name="TicketUpdatedSuccessfully">Ticket Status Updated  successfully!</string>
+
+    <string name="LogoutConfirmationMessage">Do you want to logout?</string>
+    <string name="UpdateTicketBtn">Update Ticket</string>
+    <string name="Edit">Edit</string>
 
 
 </resources>

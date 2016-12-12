@@ -26,13 +26,15 @@ public class ResponseParser {
      */
     public static UserModel parseLoginResponse(Object object) {
         JSONObject jsonObj = null;
+        JSONObject jsonObj1 = null;
         UserModel model = new UserModel();
         try {
             jsonObj = new JSONObject(object.toString());
-            model.setUser_id(jsonObj.getString(APIUtils.PARAM_USER_ID));
-            model.setUserName(jsonObj.getString(APIUtils.PARAM_USER_NAME));
-            model.setUsertype(jsonObj.getString(APIUtils.PARAM_USER_TYPE));
-            model.setEmail(jsonObj.getString(APIUtils.PARAM_EMAIL));
+            jsonObj1=jsonObj.getJSONObject("user");
+            model.setUser_id(jsonObj1.getString(APIUtils.PARAM_USER_ID));
+            model.setUserName(jsonObj1.getString(APIUtils.PARAM_USER_NAME));
+            model.setUsertype(jsonObj1.getString(APIUtils.PARAM_USER_TYPE));
+            model.setEmail(jsonObj1.getString(APIUtils.PARAM_EMAIL));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -93,9 +95,9 @@ public class ResponseParser {
                 ticketModel.setTicketopendate(ticketObject1.getString("ticketopendate"));
                 ticketModel.setAssignedto(ticketObject1.getString("assignedto"));
                 ticketModel.setTicketstatus(ticketObject1.getInt("ticketstatus"));
-                ticketModel.setTickettype(ticketObject1.getString("tickettype"));
-                ticketModel.setCat_id(ticketObject1.getString("cat_id"));
-                ticketModel.setSubcat_id(ticketObject1.getString("subcat_id"));
+                ticketModel.setTickettype(ticketObject1.getInt("tickettype"));
+                ticketModel.setCat_id(ticketObject1.getInt("cat_id"));
+                ticketModel.setSubcat_id(ticketObject1.getInt("subcat_id"));
                 ticketModel.setIsDeleted(ticketObject1.getString("IsDeleted"));
                 ticketModel.setCreatedby(ticketObject1.getString("createdby"));
                 ticketModel.setCreateddate(ticketObject1.getString("Createddate"));
@@ -122,14 +124,14 @@ public class ResponseParser {
      * @return
      */
     public static ArrayList<SubCategoryModel> parseSubCategoryResponse(Object object) {
-        JSONArray categoriesArray = null;
+        JSONArray subCategoriesArray = null;
         ArrayList<SubCategoryModel> subCategoryList=new ArrayList<>();
         try {
             JSONObject responseJsonObject=new JSONObject(object.toString());
-            categoriesArray = responseJsonObject.getJSONArray("subcategories");
-            for(int i=0;i<categoriesArray.length();i++)
+            subCategoriesArray = responseJsonObject.getJSONArray("subcategories");
+            for(int i=0;i<subCategoriesArray.length();i++)
             {
-                JSONObject categoryObject=categoriesArray.getJSONObject(i);
+                JSONObject categoryObject=subCategoriesArray.getJSONObject(i);
                 JSONObject subCategoryObject1=categoryObject.getJSONObject("subcategory");
                 int catId=subCategoryObject1.getInt("cat_id");
                 int subCatId=subCategoryObject1.getInt("sub_cat_id");

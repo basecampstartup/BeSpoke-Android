@@ -2,9 +2,11 @@ package com.bespoke;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.utils.EmailSyntaxChecker;
 import com.bespoke.utils.Logger;
 import com.bespoke.utils.UserTypeEnum;
+import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -120,9 +123,11 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mContext, "Your Password reset Successfully", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
-                                finish();
+                                String message=responseObject.optString("message");
+                                SuccessDialog(message);
+                                //Toast.makeText(mContext, "Your Password reset Successfully", Toast.LENGTH_SHORT).show();
+                              /*  startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+                                finish();*/
                             }
                         });
                     }
@@ -130,7 +135,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(mContext, "Something went wrong please try again later!", Toast.LENGTH_SHORT).show();
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
+                               // Toast.makeText(mContext, "Something went wrong please try again later!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -139,7 +145,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         @Override
                         public void run() {
                             String message = responseObject.optString("message");
-                            Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
                 }
@@ -157,7 +164,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                 if(loader!=null) {
                     loader.dismiss();
                 }
-                Toast.makeText(mContext, "OnFailure: Something went wrong please try again later!", Toast.LENGTH_SHORT).show();
+                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
+                //Toast.makeText(mContext, "OnFailure: Something went wrong please try again later!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -213,5 +221,30 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         map.put(APIUtils.PARAM_EMAIL, email);
         map.put(APIUtils.PARAM_NEW_PASSWORD, password);
         return map;
+    }
+
+    /**
+     * To display alert dialog for invalid fields
+     *
+     * @param message (msg to display)
+     */
+
+    public void SuccessDialog(String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
+                        finish();
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+        //alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
     }
 }

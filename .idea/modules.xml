@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BeSpoke-Android.iml" filepath="$PROJECT_DIR$/BeSpoke-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/datepickerlibrary/datepickerlibrary.iml" filepath="$PROJECT_DIR$/datepickerlibrary/datepickerlibrary.iml" />
     </modules>
   </component>
 </project>

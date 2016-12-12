@@ -37,42 +37,70 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForgotPasswordActivity"
             android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".ViewIssuesActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.Base" />
+            android:label="@string/LeftPanelViewIssues"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".ViewRequestsActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.Base" />
+            android:label="@string/LeftPanelViewRequests"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".DocumentsActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/LeftPanelDocuments"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".ReportsActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/LeftPanelReports"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".CategoryActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.Base" />
+            android:label="@string/LeftPanelCategory"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_home"
+            android:label="@string/action_settings"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
         <activity
             android:name=".IssueDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
-        <activity android:name=".AddIssueActivity"
+        <activity
+            android:name=".AddIssueActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".ChartActivity"
+            android:label="@string/title_activity_chart"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddRequestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".RequestDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
+        <activity android:name=".UpdateIssueActivity"></activity>
     </application>
 
 </manifest>

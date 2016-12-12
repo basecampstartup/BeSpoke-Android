@@ -4,11 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -17,18 +16,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
-import com.bespoke.servercommunication.Communicator;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.utils.EmailSyntaxChecker;
 import com.bespoke.utils.UserTypeEnum;
 import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class NewAccountActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback {
@@ -87,6 +87,22 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                 strPassword = edtPassword.getText().toString().trim();
                 strReEnteredPassword = edtConfirmPassword.getText().toString().trim();
                 strUserName = edtUserName.getText().toString().trim();
+
+                if (!validate()) {
+                    return;
+                }
+                if (radAdmin.isChecked() || radSuperAdmin.isChecked() || radNormalUser.isChecked()) {
+
+                } else {
+                    Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.RoleAlert));
+                    return;
+                }
+                if (!strPassword.equalsIgnoreCase(strReEnteredPassword)/* || password.length() < 4 || password.length() > 10*/) {
+                    //Utils.showErrorDialog(mContext,getString(R.string.SignUpPasswordsNotMatch));
+                    Utils.alertDialog(mContext,getResources().getString(R.string.Alert),getResources().getString(R.string.SignUpPasswordsNotMatch));
+                    return;
+                }
+
                 String radiovalue = ((RadioButton) findViewById(radGroupRole.getCheckedRadioButtonId())).getText().toString();
                 if(radiovalue.equalsIgnoreCase(getResources().getString(R.string.AdminText)))
                 {
@@ -99,9 +115,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                 if(radiovalue.equalsIgnoreCase(getResources().getString(R.string.NormalUser)))
                 {
                     strUserType= UserTypeEnum.NORMALUSER.getId()+"";
-                }
-                if (!validate()) {
-                    return;
                 }
                 if (CheckNetwork.isInternetAvailable(mContext)) {
                     loader.show();
@@ -160,15 +173,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         } else {
             edtUserName.setError(null);
         }
-
-        if (!password.equalsIgnoreCase(rePassword)/* || password.length() < 4 || password.length() > 10*/) {
-           //Utils.showErrorDialog(mContext,getString(R.string.SignUpPasswordsNotMatch));
-            edtPassword.setError(getString(R.string.SignUpPasswordsNotMatch));
-            valid = false;
-        } else {
-            edtPassword.setError(null);
-        }
-
         return valid;
     }
 
@@ -179,7 +183,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
      */
     public HashMap<String, String> getRegistrationRequestMap(String email, String password,String username,String userType) {
         HashMap<String, String> map = new HashMap<>();
-        map.put(APIUtils.PARAM_USER_NAME, username);
+        map.put(APIUtils.USER_NAME_SMALL, username);
         map.put(APIUtils.PARAM_EMAIL, email);
         map.put(APIUtils.PARAM_PASSWORD, password);
         map.put(APIUtils.PARAM_USER_TYPE, userType);
@@ -209,7 +213,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void run() {
                                 RegisterCompleateDialog(getResources().getString(R.string.RegisterdSuccessfully));
-                                Toast.makeText(mContext, "User Registerd Successfully!", Toast.LENGTH_SHORT).show();
+                             //   Toast.makeText(mContext, "User Registerd Successfully!", Toast.LENGTH_SHORT).show();
 
                             }
                         });
@@ -220,20 +224,19 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
-                                Toast.makeText(mContext, "Error in Registration please try again later!", Toast.LENGTH_SHORT).show();
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
+                                //Toast.makeText(mContext, "Error in Registration please try again later!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                     }
                 }
                 else {
-                    final String message = responseObject.optString("message");
+                    final String messageFromServer = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-                            Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),messageFromServer);
                         }
                     });
 
@@ -252,7 +255,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                 if(loader!=null) {
                     loader.dismiss();
                 }
-                Toast.makeText(mContext, "On Failure of Register user", Toast.LENGTH_SHORT).show();
+                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
             }
         });
 
@@ -284,18 +287,4 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         //alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
     }
 
-    public static void PasswordDoNotMatchDialog(Context con,String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(con);
-        // set dialog message
-        alertDialogBuilder
-                .setMessage(message)
-                .setCancelable(false)
-                .setPositiveButton(con.getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
 }

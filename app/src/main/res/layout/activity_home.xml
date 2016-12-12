@@ -19,7 +19,16 @@
             layout="@layout/toolbar"
             android:visibility="visible" />
 
-        <include layout="@layout/layout_home_content" />
+        <include
+            android:id="@+id/homePanel"
+            layout="@layout/layout_home_content"
+            android:visibility="visible"/>
+
+     <!--   <FrameLayout
+            android:id="@+id/frameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            ></FrameLayout>-->
     </LinearLayout>
 
 

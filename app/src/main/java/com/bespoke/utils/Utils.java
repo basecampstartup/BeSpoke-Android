@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.text.Spanned;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.bespoke.R;
 
@@ -23,7 +25,7 @@ import java.util.Locale;
 
 public class Utils {
 
-
+    public static final int DRAWABLE_RIGHT = 2;
     /**
      * @param context context
      * @param fontId  fontid
@@ -170,4 +172,49 @@ public class Utils {
         String dateString = bDate.replace(currentYear, "");
         return dateString.replace(",", "");
     }
+
+
+    /**
+     * @param context
+     * @param view
+     */
+    public static void hideSoftKeyboard(Context context, View view) {
+        try {
+            if (view.requestFocus()) {
+                final InputMethodManager inputMethodManager =
+                        (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param context
+     * @param view
+     */
+    public static void showSoftKeyboard(Context context, View view) {
+        try {
+            if (view.requestFocus()) {
+                InputMethodManager imm = (InputMethodManager)
+                        context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static void hideSoftKeyboardWithoutReq(Context context, View view) {
+        try {
+            if (view != null) {
+                final InputMethodManager inputMethodManager =
+                        (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
 }

@@ -3,7 +3,11 @@ package com.bespoke;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,7 +24,9 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bespoke.Model.Category;
+import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.SubCategoryModel;
+import com.bespoke.Model.TicketModel;
 import com.bespoke.Model.UserModel;
 import com.bespoke.adapter.CategoryListDialogAdapter;
 import com.bespoke.adapter.SubCategoryListDialogAdapter;
@@ -31,9 +37,16 @@ import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
+import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.DateStyleEnum;
+import com.bespoke.utils.TicketStatus;
 import com.bespoke.utils.Utils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,22 +54,35 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class AddIssueActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
+
     private Toolbar mToolbar;
     private Context mContext;
-    String[] arrIssueTypeLabel = {"Open", "Inprogress", "Closed"};
-    String[] arrIssueTypeValue = {"1", "2", "3"};
     private ProgressDialog loader = null;
-    ArrayList<Category> categoryList;
-    ArrayList<SubCategoryModel> subCategoryList;
-    ArrayList<SubCategoryModel> activeSubCategoryList;
+    private long mLastClickTime = 0;
+    //List for different dropdown datas
+    ArrayList<Category> categoryList=new ArrayList<>();
+    ArrayList<SubCategoryModel> subCategoryList=new ArrayList<>();
+    ArrayList<SubCategoryModel> activeSubCategoryList=new ArrayList<>();
     ArrayList<UserModel> userList;
-    EditText edtShortDescription, edtDescription, edtUserName, edtAssignedTo;
+
+    //UI components
+    EditText edtShortDescription, edtDescription, edtAssignedTo;
     TextView tvSelectCategory, tvSelectCategoryLbl, tvSelectAffectedArea, tvSelectAffectedAreaLbl, tvTicketStatusLbl, tvTicketStatusValue;
-    TextView tvAssignedTo, tvAssignedToLbl, tvSelectIssueOpenDateLbl, tvSelectIssueOpenDateVal;
+    TextView tvAssignedTo, tvAssignedToLbl, tvSelectIssueOpenDateLbl, tvSelectIssueOpenDateVal,tvUserName;
     Button btnSubmitTicket, btnEmail;
+
+    //Variables used to store data values for Add issue request
+    String strShortDescription,strDescription,strDateString;
+    int  selectedCategoryId;
+    int selectedSubCategoryId;
+    int selectedTicketStatusId;
+    String selectedUserId;
+    String selectedDateString;
+
     private int d = 0, mon = 0, y = 0;
     private static String DISPLAY_DATE_FORMAT = "MMM d, yyyy";
 
@@ -72,9 +98,10 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.AddIssue));
         initializeComponents();
-        setCurrentDataTimeFields();
+        setCurrentDateTimeFields();
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
+        loader.setCancelable(false);
         if (CheckNetwork.isInternetAvailable(mContext)) {
             loader.show();
             //Call API Request after check internet connection
@@ -111,15 +138,15 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         tvSelectIssueOpenDateLbl.setOnClickListener(this);
         tvSelectIssueOpenDateVal.setOnClickListener(this);
         edtShortDescription = (EditText) findViewById(R.id.edtShortDescription);
-        edtDescription = (EditText) findViewById(R.id.edtShortDescription);
-        edtUserName = (EditText) findViewById(R.id.edtUserName);
-
+        edtDescription = (EditText) findViewById(R.id.edtDescription);
+        tvUserName = (TextView) findViewById(R.id.tvUserName);
         btnSubmitTicket = (Button) findViewById(R.id.btnSubmitTicket);
         btnEmail = (Button) findViewById(R.id.btnEmail);
 
         btnSubmitTicket.setOnClickListener(this);
         btnEmail.setOnClickListener(this);
-
+        Utils.hideSoftKeyboard(mContext,edtShortDescription);
+        tvUserName.setText(AppSPrefs.getString(Commons.USER_NAME));
 
     }
 
@@ -169,7 +196,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -202,6 +229,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -233,7 +261,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                         @Override
                         public void run() {
                             String message = responseObject.optString("message");
-                            Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -242,6 +270,51 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                 e.printStackTrace();
             }
         }
+
+
+        if (APIUtils.METHOD_CREATE_TICKET.equalsIgnoreCase(name)) {
+            try {
+                final JSONObject responseObject = new JSONObject(object.toString());
+                String error = responseObject.optString("error");
+                if (TextUtils.isEmpty(error)) {
+                    String success = responseObject.optString("success");
+                    if (success.equalsIgnoreCase("true")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                issueCreatedSucessDialog(getResources().getString(R.string.IssueCreatedSuccessfully));
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
+                            }
+                        });
+
+                    }
+                }else {
+                    // In case of error occured.
+                    final String message = responseObject.optString("message");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
+                          //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 
@@ -253,6 +326,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                 if (loader != null) {
                     loader.dismiss();
                 }
+                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
             }
         });
     }
@@ -270,10 +344,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         return subCategoryModelList;
     }
 
-
-    int selectedCategoryId;
-    int selectedCategory;
-
+    /**
+     * this method will show the category list dropdown
+     */
     public void showCategoryDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -288,7 +361,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                 final Category selectedCategory = categoryList.get(position);
                 selectedCategoryId = selectedCategory.getCat_id();
                 tvSelectCategory.setText(selectedCategory.getCategory());
+                tvSelectAffectedArea.setText(getResources().getString(R.string.AffectedAreatxt));
                 dialog.dismiss();
+
             }
         });
         dialog.setContentView(view);
@@ -297,48 +372,68 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
 
     }
 
+    /**
+     * this is a ovverridded method for components click events.
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
 
             case R.id.btnEmail:
-                //  Toast.makeText(mContext,"btnEmail click",Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext,"This feature under Developement! ",Toast.LENGTH_LONG).show();
+               //  Toast.makeText(mContext,"Selected Date String:,selectedTicketStatusId "+selectedDateString+", "+selectedTicketStatusId,Toast.LENGTH_LONG).show();
                 break;
             case R.id.btnSubmitTicket:
-            //    Toast.makeText(mContext, "btnSubmitTicket click", Toast.LENGTH_LONG).show();
+                if(!validate()) return;
+                if(!validateDropDowns())return;
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
+                    return;
+                }
+
+                mLastClickTime = SystemClock.elapsedRealtime();
+                processRequestData();
+                Gson gson = new Gson();
+                Type type = new TypeToken<IssueModel>() {}.getType();
+                String json = gson.toJson(model, type);
+                HashMap<String, String> retMap = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>() {}.getType());
+                Log.e("RequestJSon",json);
+                if (CheckNetwork.isInternetAvailable(mContext)) {
+                    loader.show();
+                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_TICKET, retMap);
+                    //Call API Request after check internet connection
+                } else {
+                    Utils.alertDialog(mContext,mContext.getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));
+                    //Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
+                }
+
+
                 break;
             case R.id.tvSelectCategory:
-                //  Toast.makeText(mContext,"tvCategory click",Toast.LENGTH_LONG).show();
                 showCategoryDialog();
                 break;
             case R.id.tvSelectCategoryLbl:
-                // Toast.makeText(mContext,"tvSelectCategoryLbl click",Toast.LENGTH_LONG).show();
                 showCategoryDialog();
                 break;
             case R.id.tvSelectAffectedAreaLbl:
-                //  Toast.makeText(mContext,"tvCategoryLbl click",Toast.LENGTH_LONG).show();
                 showSubCategoryDialog();
                 break;
             case R.id.tvSelectAffectedArea:
-                //  Toast.makeText(mContext,"tvSelectSubCategory click",Toast.LENGTH_LONG).show();
                 showSubCategoryDialog();
                 break;
 
             case R.id.tvTicketStatusLbl:
-                //  Toast.makeText(mContext,"tvTicketStatusLbl click",Toast.LENGTH_LONG).show();
                 showTicketStatusDialog();
                 break;
             case R.id.tvTicketStatusValue:
-                //  Toast.makeText(mContext,"tvTicketStatusValue click",Toast.LENGTH_LONG).show();
                 showTicketStatusDialog();
                 break;
             case R.id.tvAssignedToLbl:
                 showUserListDialog();
-                // Toast.makeText(mContext,"tvAssignedToLbl click",Toast.LENGTH_LONG).show();
                 break;
             case R.id.tvAssignedTo:
                 showUserListDialog();
-                // Toast.makeText(mContext,"tvAssignedTo click",Toast.LENGTH_LONG).show();
                 break;
             case R.id.tvSelectIssueOpenDateLbl:
                 openDatePicker();
@@ -346,17 +441,18 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             case R.id.tvIssueOpenDate:
                 openDatePicker();
                 break;
-
             default:
         }
     }
 
-    int selectedSubCategoryId;
+
 
     public void showSubCategoryDialog() {
         activeSubCategoryList = getSubCategoryListByCategory(selectedCategoryId);
-        if (activeSubCategoryList.size() <= 0)
+        if (activeSubCategoryList.size() <= 0) {
             Toast.makeText(mContext, "No Subcategory available", Toast.LENGTH_LONG).show();
+            return;
+        }
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
@@ -365,7 +461,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SubCategoryModel selectedSubCategory = subCategoryList.get(position);
+                SubCategoryModel selectedSubCategory = activeSubCategoryList.get(position);
                 selectedSubCategoryId = selectedSubCategory.getSub_cat_id();
                 tvSelectAffectedArea.setText(selectedSubCategory.getSubcategory());
                 dialog.dismiss();
@@ -375,7 +471,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dialog.show();
     }
 
-    String selectedTicketStatusId;
+
 
     public void showTicketStatusDialog() {
 
@@ -390,7 +486,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String status = getTicketStatusLabelList().get(position);
                 tvTicketStatusValue.setText(status);
-                selectedTicketStatusId = getTicketStatusIdList().get(position);
+              //  selectedTicketStatusId = TicketStatus.getType(status).getId();
+                selectedTicketStatusId=TicketStatus.getType(status.toUpperCase()).getId();
+                // selectedTicketStatusId = getTicketStatusIdList().get(position);
                 dialog.dismiss();
             }
         });
@@ -398,7 +496,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dialog.show();
     }
 
-    String selectedUserId;
+
 
     public void showUserListDialog() {
 
@@ -424,7 +522,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         ArrayList<String> list = new ArrayList<>();
         list.add("Open");
         list.add("Inprogress");
-        list.add("Completed");
+        list.add("Closed");
         return list;
     }
 
@@ -449,11 +547,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         boolean valid = true;
         String shortDescription = edtShortDescription.getText().toString();
         String description = edtDescription.getText().toString();
-        String strSelectedAffectedArea = tvSelectAffectedArea.getText().toString();
-        String strTicketStatus = tvTicketStatusValue.getText().toString();
-        String strAssignedTo = tvAssignedTo.getText().toString();
-
-
         if (shortDescription.isEmpty()) {
             edtShortDescription.setError(getString(R.string.EnterShortDescription));
             valid = false;
@@ -469,16 +562,36 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         return valid;
     }
 
-    public boolean validateDropDowns()
-    {
+    /**
+     * This method will validate all the dropdown data.
+     * @return
+     */
+    public boolean validateDropDowns() {
+        String strSelectedCategory = tvSelectCategory.getText().toString();
         String strSelectedAffectedArea = tvSelectAffectedArea.getText().toString();
         String strTicketStatus = tvTicketStatusValue.getText().toString();
         String strAssignedTo = tvAssignedTo.getText().toString();
-        if(strSelectedAffectedArea.equalsIgnoreCase(getResources().getString(R.string.AffectedArea)))
-        {
-
+        if (strSelectedCategory.equalsIgnoreCase(getResources().getString(R.string.Categorytxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectCategoryAlert));
+            return false;
         }
-        return  true;
+        if (strSelectedAffectedArea.equalsIgnoreCase(getResources().getString(R.string.AffectedAreatxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAffectedAreaAlert));
+            return false;
+        }
+        if (strTicketStatus.equalsIgnoreCase(getResources().getString(R.string.TicketStatustxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectTicketAlert));
+            return false;
+        }
+        if (strAssignedTo.equalsIgnoreCase(getResources().getString(R.string.AssignedTotxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
+            return false;
+        }
+        if (strAssignedTo.equalsIgnoreCase(getResources().getString(R.string.AssignedTotxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -494,7 +607,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
     /**
      * To set current date and time in date-time text fields
      */
-    private void setCurrentDataTimeFields() {
+    private void setCurrentDateTimeFields() {
         Calendar now = Calendar.getInstance();
         now.setTimeZone(TimeZone.getDefault());
         y = now.get(Calendar.YEAR);
@@ -502,8 +615,19 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         d = now.get(Calendar.DAY_OF_MONTH);
         Log.v("Calendar11", "At setCurrentDataTimeFields: Time Value Start:" + y + ":" + mon + ":" + d);
         Date startDate = getDateByTime(y, mon, d);
-        tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, startDate, DateStyleEnum.StyleType.MEDIUM));
-        tvSelectIssueOpenDateVal.setTag(getCustomDateFormat(startDate));
+       //tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, startDate, DateStyleEnum.StyleType.MEDIUM));
+        //tvSelectIssueOpenDateVal.setTag(getCustomDateFormat(startDate));
+        String dateString =  y + "-" + (mon + 1) + "-" + d;
+        SimpleDateFormat mdyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date dateObj=null;
+        try {
+             dateObj= mdyFormat.parse(dateString);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String dt=mdyFormat.format(dateObj);
+        tvSelectIssueOpenDateVal.setText(dt);
+        selectedDateString=dt;
     }
 
     /**
@@ -535,13 +659,23 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
     @Override
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+        String dateString = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
         try {
             SimpleDateFormat mdyFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date dateObj = mdyFormat.parse(date);
-            tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, dateObj, DateStyleEnum.StyleType.MEDIUM));
+            //tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, dateObj, DateStyleEnum.StyleType.MEDIUM));
+            SimpleDateFormat mdyFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date dateObj1=null;
+            try {
+                dateObj= mdyFormat1.parse(dateString);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            String dt=mdyFormat1.format(dateObj);
+            tvSelectIssueOpenDateVal.setText(dt);
          //   previousStartDate = textStartDate.getTag().toString() + " " + textStartTime.getTag().toString();
-
-                setDatePickerDate(dayOfMonth, monthOfYear, year);
+             selectedDateString=dt;
+             setDatePickerDate(dayOfMonth, monthOfYear, year);
 
 
         } catch (Exception e) {
@@ -562,9 +696,54 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             mon = month;
             y = year;
     }
+    IssueModel model;
+    public void processRequestData()
+    {
+        strShortDescription=edtShortDescription.getText().toString().trim();
+        strDescription=edtDescription.getText().toString().trim();
+        model=new IssueModel();
+        model.setShortdesc(strShortDescription);
+        model.setDescription(strDescription);
+        model.setShortdesc(strShortDescription);
+        model.setUser_id(AppSPrefs.getString(Commons.USER_ID));
+        model.setTicketopendate(selectedDateString);
+        model.setAssignedto(selectedUserId);
+        model.setTicketstatus(selectedTicketStatusId);
+        model.setTickettype(Commons.TICKET_TYPE_ISSUE);
+        model.setCat_id(selectedCategoryId);
+        model.setSubcat_id(selectedSubCategoryId);
+        model.setCreatedby(AppSPrefs.getString(Commons.USER_ID));
+        Date d=new Date();
+        SimpleDateFormat mdyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String createdDate=mdyFormat.format(d);
+        model.setCreateddate(createdDate);
 
+    }
 
+    /**
+     * To display alert dialog for invalid fields
+     *
+     * @param message (msg to display)
+     */
 
+    public void issueCreatedSucessDialog(String message) {
+        ;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setResult(1);
+                        finish();
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 }
 
 

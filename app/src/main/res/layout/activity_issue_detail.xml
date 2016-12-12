@@ -3,7 +3,7 @@
     android:id="@+id/activity_issue_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,8 +19,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:id="@+id/rlRoot"
@@ -43,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/id"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -53,7 +52,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/idtxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/ShortDescription"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -75,7 +75,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/ShortDescription"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -87,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/Description"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -97,7 +98,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/Descriptiontxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -109,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/Category"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -119,7 +121,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/Categorytxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -131,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/AffectedArea"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -141,9 +144,9 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:hint="@string/AffectedAreatxt"
-                    android:textColor="@color/colorTextGray">
-
-                </TextView>
+                    android:text="@string/AffectedAreatxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large"></TextView>
 
                 <include layout="@layout/divider" />
 
@@ -153,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/User"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -163,7 +166,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/Usertxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -176,7 +180,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/IssueOpenDate"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -186,7 +190,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/IssueOpenDatetxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -198,7 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/AssignedTo"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -208,7 +213,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/AssignedTotxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 
@@ -220,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/TicketStatus"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorButtonBG"
                     android:textSize="@dimen/default_textsize_large" />
 
                 <TextView
@@ -230,7 +236,8 @@
                     android:layout_marginBottom="@dimen/margin_10dp"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/TicketStatustxt"
-                    android:textColor="@color/colorTextGray">
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
 
                 </TextView>
 

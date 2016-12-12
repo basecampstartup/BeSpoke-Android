@@ -20,7 +20,11 @@ public class APIUtils {
     public static final String METHOD_GET_ALL_CATEGORY = "GetAllCategory";
     public static final String METHOD_GET_ALL_ISSUES = "GetAllIssue";
     public static final String METHOD_GET_ALL_SUB_CATEGORY = "GetAllSubCategory";
+    public static final String METHOD_CREATE_TICKET = "CreateTicket";
+    public static final String METHOD_UPDATE_TICKET = "UpdateTicketStatus";
 
+
+    public static final String METHOD_GET_ALL_REQUEST = "GetAllRequest";
 
     public static final String PARAM_EMAIL = "email";
     public static final String PARAM_PASSWORD = "pswd";
@@ -29,6 +33,9 @@ public class APIUtils {
     public static final String PARAM_USER_NAME = "UserName";
     public static final String PARAM_USER_ID = "user_id";
 
-
+    public static final String USER_NAME_SMALL = "username";
     //usertype 1,2,3 (for admin, super admin, normal user)
+    public static final String TICKET_STATUS = "ticketstatus";
+    public static final String TICKET_ID = "ticket_id";
+    public static final String TICKET_TYPE = "tickettype";
 }

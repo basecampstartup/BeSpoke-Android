@@ -24,6 +24,7 @@ import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
+import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -58,10 +59,10 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
             //Call API Request after check internet connection
             new CommunicatorNew(mContext, Request.Method.GET, APIUtils.METHOD_GET_ALL_CATEGORY, new HashMap<String,String>());
         } else {
-            Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
+            //Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
+            Utils.alertDialog(mContext,getResources().getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -74,6 +75,13 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -84,12 +92,6 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
 
             default:
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
     }
 
 
@@ -121,7 +123,8 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -141,7 +144,7 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 if(loader!=null) {
                     loader.dismiss();
                 }
-                Toast.makeText(mContext, "On Failure of Category", Toast.LENGTH_SHORT).show();
+                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
             }
         });
     }

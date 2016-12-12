@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:padding="@dimen/dim_padding_10dp"
+    android:padding="@dimen/dim_padding_30dp"
     android:orientation="vertical">
 
 
@@ -35,7 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/DashboardIssues"
-            android:textColor="@color/colorWhite"/>
+            android:paddingTop="@dimen/dim_padding_5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/default_textsize_large"/>
 
             </LinearLayout>
 
@@ -61,7 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/DashboardRequest"
-                android:textColor="@color/colorWhite"/>
+                android:paddingTop="@dimen/dim_padding_5dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/default_textsize_large"/>
 
             </LinearLayout>
     </LinearLayout>
@@ -93,10 +97,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/LeftPanelDocuments"
-            android:textColor="@color/colorWhite"/>
+            android:paddingTop="@dimen/dim_padding_5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/default_textsize_large"/>
             </LinearLayout>
         <LinearLayout
-            android:id="@+id/llReports"
+            android:id="@+id/llCataegoryHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -107,16 +113,18 @@
             android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/btnReports"
+            android:id="@+id/btnCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/dashboard_reports" />
+            android:src="@drawable/category_large" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/LeftPanelReports"
-            android:textColor="@color/colorWhite"/>
+            android:text="@string/LeftPanelCategory"
+            android:paddingTop="@dimen/dim_padding_5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/default_textsize_large"/>
             </LinearLayout>
     </LinearLayout>
 </LinearLayout>

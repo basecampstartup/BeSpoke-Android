@@ -16,4 +16,12 @@ public class Commons {
     public static final byte ZERO = 0;
     public static final byte ONE = 1;
     public static final byte TWO = 2;
+
+    public static final String USER_NAME = "username";
+    public static final String USER_TYPE = "usertype";
+    public static final String EMAIL = "email";
+
+
+    public static final byte TICKET_TYPE_ISSUE = 1;
+    public static final byte TICKET_TYPE_REQUEST = 2;
 }

@@ -22,8 +22,10 @@ import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.Communicator;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
+import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.EmailSyntaxChecker;
 import com.bespoke.utils.Logger;
+import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
 
@@ -47,6 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //set loader
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
+        loader.setCancelable(false);
     }
     /**
      * Initialize the UI components.
@@ -149,7 +152,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void run() {
                             UserModel model= ResponseParser.parseLoginResponse(responseObject);
-                            //Toast.makeText(mContext, "You are Logged-In Successfully!", Toast.LENGTH_SHORT).show();
+                            AppSPrefs.setAlreadyLoggedIn(true);
+                            AppSPrefs.setString(Commons.USER_NAME, model.getUserName());
+                            AppSPrefs.setString(Commons.EMAIL, model.getEmail());
+                            AppSPrefs.setString(Commons.USER_ID, model.getUser_id());
+                            AppSPrefs.setString(Commons.USER_TYPE, model.getUsertype());
+                            String username=AppSPrefs.getString(Commons.USER_NAME);
+                            String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+                            String email=AppSPrefs.getString(Commons.EMAIL);
+                            String userid=AppSPrefs.getString(Commons.USER_ID);
+
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         }
@@ -162,7 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void run() {
                             String message = responseObject.optString("message");
-                            Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -182,7 +195,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(loader!=null) {
                     loader.dismiss();
                 }
-                Toast.makeText(mContext, "On Failure of login", Toast.LENGTH_SHORT).show();
+                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
+                //Toast.makeText(mContext, "On Failure of login", Toast.LENGTH_SHORT).show();
             }
         });
     }

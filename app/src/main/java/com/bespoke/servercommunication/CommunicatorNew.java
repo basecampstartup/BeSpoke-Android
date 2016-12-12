@@ -97,6 +97,23 @@ public class CommunicatorNew {
             }
             return jsonObject;
         }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_CREATE_TICKET)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_UPDATE_TICKET)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+
         return null;
     }
 

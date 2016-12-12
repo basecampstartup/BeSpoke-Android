@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_issue_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rlRoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:padding="@dimen/dim_padding_10dp">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/tvIDLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/id"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvIDValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/idtxt"
+                    android:textSize="@dimen/default_textsize_large"
+                    android:textColor="@color/colorWhite">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvShortDescriptionLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/ShortDescription"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvShortDescriptionValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/ShortDescription"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvDescriptionLable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/Description"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvDescriptionValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/Descriptiontxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/Category"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvCategoryValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/Categorytxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvAffectedAreaLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/AffectedArea"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvAffectedAreaValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:hint="@string/AffectedAreatxt"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/AffectedAreatxt"
+                    android:textSize="@dimen/default_textsize_large">
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvUserLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/User"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvUserValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/Usertxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+
+                <TextView
+                    android:id="@+id/tvIssueOpenDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/IssueOpenDate"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvIssueOpenDateValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/IssueOpenDatetxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvAssignedToLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/AssignedTo"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvAssignedToValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/AssignedTotxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <TextView
+                    android:id="@+id/tvTicketStatusLbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/TicketStatus"
+                    android:textColor="@color/colorButtonBG"
+                    android:textSize="@dimen/default_textsize_large" />
+
+                <TextView
+                    android:id="@+id/tvTicketStatusValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_10dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:text="@string/TicketStatustxt"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/default_textsize_large">
+
+                </TextView>
+
+                <include layout="@layout/divider" />
+
+                <LinearLayout
+                    android:id="@+id/layoutBtns"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnCloseTicket"
+                        style="@style/button_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dim_padding_10dp"
+                        android:layout_weight="1"
+                        android:text="@string/CloseTicketBtn"></Button>
+
+                    <Button
+                        android:id="@+id/btnEmailUser"
+                        style="@style/button_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dim_padding_10dp"
+                        android:layout_weight="1"
+                        android:text="@string/EmailUserBtn"></Button>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

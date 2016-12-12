@@ -15,9 +15,9 @@ public class TicketModel implements Serializable {
     private String ticketopendate;
     private String assignedto;
     private int ticketstatus;
-    private String tickettype;
-    private String cat_id;
-    private String subcat_id;
+    private int tickettype;
+    private int cat_id;
+    private int subcat_id;
     private String IsDeleted;
     private String createdby;
     private String Createddate;
@@ -93,37 +93,30 @@ public class TicketModel implements Serializable {
     }
 
     public void setTicketstatus(int ticketstatus) {
-
         this.ticketstatus = ticketstatus;
     }
 
-    public String getTickettype() {
-        if (tickettype == null || tickettype.equalsIgnoreCase("null")) tickettype = "";
+    public int getTickettype() {
         return tickettype;
     }
 
-    public void setTickettype(String tickettype) {
-
+    public void setTickettype(int tickettype) {
         this.tickettype = tickettype;
     }
 
-    public String getCat_id() {
-        if (cat_id == null || cat_id.equalsIgnoreCase("null")) cat_id = "";
+    public int getCat_id() {
         return cat_id;
     }
 
-    public void setCat_id(String cat_id) {
-
+    public void setCat_id(int cat_id) {
         this.cat_id = cat_id;
     }
 
-    public String getSubcat_id() {
-        if (subcat_id == null || subcat_id.equalsIgnoreCase("null")) subcat_id = "";
+    public int getSubcat_id() {
         return subcat_id;
     }
 
-    public void setSubcat_id(String subcat_id) {
-
+    public void setSubcat_id(int subcat_id) {
         this.subcat_id = subcat_id;
     }
 
