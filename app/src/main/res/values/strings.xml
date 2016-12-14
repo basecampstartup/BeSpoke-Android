@@ -107,14 +107,23 @@
     <string name="ConfirmCloseTicket">Do you want to close this Ticket!</string>
 
     <string name="ErrorInCreatingTicket">Error in Creating issue please try again later!</string>
-    <string name="IssueCreatedSuccessfully">Your issue crreated successfully!</string>
-    <string name="RequestCreatedSuccessfully">Your Request crreated successfully!</string>
+    <string name="IssueCreatedSuccessfully">Your issue created successfully!</string>
+    <string name="RequestCreatedSuccessfully">Your Request created successfully!</string>
     <string name="ErrorInUpdateTicket">Error in Updating Ticket status please try later!</string>
     <string name="TicketUpdatedSuccessfully">Ticket Status Updated  successfully!</string>
+    <string name="TicketUpdatedSuccessfullyMsg">Ticket Updated  successfully!</string>
 
     <string name="LogoutConfirmationMessage">Do you want to logout?</string>
     <string name="UpdateTicketBtn">Update Ticket</string>
     <string name="Edit">Edit</string>
+
+    <string name="CreateCategory">Create Category</string>
+    <string name="CreateSubCategory">Create Subcategory</string>
+    <string name="CategoryName">Category Name</string>
+    <string name="SubCategoryName">Subcategory Name</string>
+    <string name="EnterCategoryName">Enter Category Name</string>
+    <string name="CategoryCreatedSuccessfully">Category created successfully!</string>
+    <string name="SubCategoryCreatedSuccessfully">Subcategory created successfully!</string>
 
 
 </resources>

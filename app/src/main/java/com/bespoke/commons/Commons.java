@@ -20,8 +20,12 @@ public class Commons {
     public static final String USER_NAME = "username";
     public static final String USER_TYPE = "usertype";
     public static final String EMAIL = "email";
+    public static final String DEVICE_ID = "deviceID";
 
 
     public static final byte TICKET_TYPE_ISSUE = 1;
     public static final byte TICKET_TYPE_REQUEST = 2;
+
+    public static final byte DEVICE_TYPE_IOS = 1;
+    public static final byte DEVICE_TYPE_ANDROID = 2;
 }

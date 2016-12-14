@@ -1,6 +1,7 @@
 package com.bespoke.servercommunication;
 
 import com.bespoke.Model.Category;
+import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.SubCategoryModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.Model.UserModel;
@@ -77,9 +78,9 @@ public class ResponseParser {
      * @param object
      * @return
      */
-    public static ArrayList<TicketModel> parseTicketsResponse(Object object) {
+    public static ArrayList<IssueModel> parseTicketsResponse(Object object) {
         JSONArray ticketArray = null;
-        ArrayList<TicketModel> ticketList=new ArrayList<>();
+        ArrayList<IssueModel> ticketList=new ArrayList<>();
         try {
             JSONObject responseJsonObject=new JSONObject(object.toString());
             ticketArray = responseJsonObject.getJSONArray("tickets");
@@ -87,7 +88,7 @@ public class ResponseParser {
             {
                 JSONObject ticketObject=ticketArray.getJSONObject(i);
                 JSONObject ticketObject1=ticketObject.getJSONObject("ticket");
-                TicketModel ticketModel=new TicketModel();
+                IssueModel ticketModel=new IssueModel();
                 ticketModel.setTicket_id(ticketObject1.getString("ticket_id"));
                 ticketModel.setShortdesc(ticketObject1.getString("shortdesc"));
                 ticketModel.setDescription(ticketObject1.getString("description"));

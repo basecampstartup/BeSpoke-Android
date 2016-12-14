@@ -3,6 +3,7 @@ package com.bespoke;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,7 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
+import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
+import com.bespoke.fcmservices.MyFirebaseInstanceIDService;
 import com.bespoke.fragments.HomeFragment;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
@@ -34,11 +38,12 @@ import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.TicketStatus;
 import com.bespoke.utils.Utils;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,APIRequestCallback {
 
     private TextView tvHome, tvViewIssues, tvViewRequests, tvDocuments, tvReports, tvCategory, tvSettings, tvLogout;
     private LinearLayout llViewIssues, llViewRequests, llDocuments,llCataegoryHome;
@@ -61,6 +66,10 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
         mContext=this;
         initializeComponents();
+        if (CheckNetwork.isInternetAvailable(mContext)) {
+         new CallRegisterDeviceAPI().execute();
+  }
+
       //  setFragment(new HomeFragment());
     }
 
@@ -208,9 +217,7 @@ public class HomeActivity extends AppCompatActivity
                 break;
             case R.id.LeftPanelLogoutPanel:
                 confirmationLogoutAlertDialog(getResources().getString(R.string.Alert),getResources().getString(R.string.LogoutConfirmationMessage));
-
                 break;
-
             case R.id.btnViewIssues:
                 startActivity(new Intent(mContext, ViewIssuesActivity.class));
                 break;
@@ -229,7 +236,6 @@ public class HomeActivity extends AppCompatActivity
     private void setFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //transaction.replace(R.id.frameContainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -272,6 +278,45 @@ public class HomeActivity extends AppCompatActivity
         alertDialog.show();
         // change color of delete text
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(HomeActivity.this.getResources().getColor(R.color.colorButtonBG));
-       // alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(HomeActivity.this.getResources().getColor(R.color.colorBlack));
+    }
+
+    public void registerUserDeviceToServer()
+    {
+            HashMap<String, String> requestMap = new HashMap<>();
+            String refreshedToken = FirebaseInstanceId.getInstance().getToken();// AppSPrefs.getString(Commons.DEVICE_ID);
+
+            if(TextUtils.isEmpty(refreshedToken))
+            {
+                String token=AppSPrefs.getString(Commons.DEVICE_ID);
+                if(TextUtils.isEmpty(token)){
+                    return;
+                }
+                 refreshedToken=token;
+            }
+            else{
+                AppSPrefs.setString(Commons.DEVICE_ID,refreshedToken);
+            }
+            requestMap.put(APIUtils.DEVICE_ID, refreshedToken);
+            requestMap.put(APIUtils.DEVICE_TYPE, Commons.DEVICE_TYPE_ANDROID+"");
+            requestMap.put(APIUtils.PARAM_USER_ID, AppSPrefs.getString(Commons.USER_ID));
+            new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_DEVICEID, requestMap);
+    }
+
+    private class CallRegisterDeviceAPI extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            registerUserDeviceToServer();
+        return "";
+        }
+   }
+
+    @Override
+    public void onSuccess(String name, Object object) {
+
+    }
+
+    @Override
+    public void onFailure(String name, Object object) {
+
     }
 }

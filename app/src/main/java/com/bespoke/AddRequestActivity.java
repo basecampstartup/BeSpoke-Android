@@ -64,7 +64,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     EditText edtShortDescription, edtDescription, edtAssignedTo;
     TextView tvSelectCategory, tvSelectCategoryLbl, tvSelectAffectedArea, tvSelectAffectedAreaLbl, tvTicketStatusLbl, tvTicketStatusValue;
     TextView tvAssignedTo, tvAssignedToLbl, tvSelectIssueOpenDateLbl, tvSelectIssueOpenDateVal,tvUserName;
-    Button btnSubmitTicket, btnEmail;
+    Button btnSubmitTicket;
 
     //List for different dropdown datas
     ArrayList<Category> categoryList=new ArrayList<>();
@@ -134,10 +134,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         edtDescription = (EditText) findViewById(R.id.edtDescription);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         btnSubmitTicket = (Button) findViewById(R.id.btnSubmitTicket);
-        btnEmail = (Button) findViewById(R.id.btnEmail);
 
         btnSubmitTicket.setOnClickListener(this);
-        btnEmail.setOnClickListener(this);
         Utils.hideSoftKeyboard(mContext,edtShortDescription);
         tvUserName.setText(AppSPrefs.getString(Commons.USER_NAME));
 
@@ -371,10 +369,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.btnEmail:
-                Toast.makeText(mContext,"This feature under Developement! ",Toast.LENGTH_LONG).show();
-                //  Toast.makeText(mContext,"Selected Date String:,selectedTicketStatusId "+selectedDateString+", "+selectedTicketStatusId,Toast.LENGTH_LONG).show();
-                break;
             case R.id.btnSubmitTicket:
                 if(!validate()) return;
                 if(!validateDropDowns())return;
@@ -388,11 +382,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 Gson gson = new Gson();
                 Type type = new TypeToken<IssueModel>() {}.getType();
                 String json = gson.toJson(model, type);
-                HashMap<String, String> retMap = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>() {}.getType());
+                HashMap<String, String> requestMap = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>() {}.getType());
                 Log.e("RequestJSon",json);
                 if (CheckNetwork.isInternetAvailable(mContext)) {
                     loader.show();
-                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_TICKET, retMap);
+                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_TICKET, requestMap);
                     //Call API Request after check internet connection
                 } else {
                     Utils.alertDialog(mContext,mContext.getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));

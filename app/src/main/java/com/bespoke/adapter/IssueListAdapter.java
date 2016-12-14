@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.R;
 import com.bespoke.utils.TicketStatus;
@@ -18,10 +20,10 @@ import java.util.ArrayList;
 public class IssueListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<TicketModel> ticketModels;
+    private ArrayList<IssueModel> ticketModels;
     private LayoutInflater lInflater;
 
-    public IssueListAdapter(Context mContext, ArrayList<TicketModel> issueModels) {
+    public IssueListAdapter(Context mContext, ArrayList<IssueModel> issueModels) {
         this.mContext = mContext;
         this.ticketModels = issueModels;
         lInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

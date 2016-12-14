@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.adapter.IssueListAdapter;
 import com.bespoke.callback.APIRequestCallback;
@@ -44,7 +45,7 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
     private Context mContext;
     ListView lstIssues;
     private ProgressDialog loader = null;
-    ArrayList<TicketModel> ticketList;
+    ArrayList<IssueModel> ticketList;
     EditText edtSearchText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +66,10 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                   TicketModel searchedTicket = manageSearchClick(edtSearchText.getText().toString().trim());
+                   IssueModel searchedTicket = manageSearchClick(edtSearchText.getText().toString().trim());
                     if(searchedTicket!=null)
                     {
-                        ArrayList<TicketModel> searchModels=new ArrayList<TicketModel>();
+                        ArrayList<IssueModel> searchModels=new ArrayList<IssueModel>();
                         searchModels.add(searchedTicket);
                         IssueListAdapter adapter=new IssueListAdapter(mContext,searchModels);
                         lstIssues.setAdapter(adapter);
@@ -103,7 +104,7 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
         lstIssues.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TicketModel model=ticketList.get(position);
+                IssueModel model=ticketList.get(position);
                 Intent i=new Intent(ViewIssuesActivity.this,IssueDetailActivity.class);
                 i.putExtra("SelectedModel", model);
                 startActivityForResult(i,1);
@@ -117,6 +118,7 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
             case android.R.id.home:
                 onBackPressed();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -207,10 +209,10 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
 
 
 
-    public TicketModel manageSearchClick(String id)
+    public IssueModel manageSearchClick(String id)
     {
 
-        TicketModel searchedTicketModel=null;
+        IssueModel searchedTicketModel=null;
         for(int i=0;i<ticketList.size();i++)
         {
             if(ticketList.get(i).getTicket_id().equalsIgnoreCase(id))

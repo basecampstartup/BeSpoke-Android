@@ -243,14 +243,6 @@
                     android:layout_weight="1"
                     android:text="@string/SubmitTicketBtn"></Button>
 
-                <Button
-                    android:id="@+id/btnEmail"
-                    style="@style/button_style"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dim_padding_10dp"
-                    android:layout_weight="1"
-                    android:text="@string/EmailBtn"></Button>
             </LinearLayout>
         </LinearLayout>
 

@@ -105,7 +105,39 @@ public class CommunicatorNew {
             }
             return jsonObject;
         }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_UPDATE_TICKET_STATUS)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
         if (methodName.equalsIgnoreCase(APIUtils.METHOD_UPDATE_TICKET)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_CREATE_CATEGORY)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_CREATE_SUB_CATEGORY)) {
+            try {
+                jsonObject = new JSONObject(params);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return jsonObject;
+        }
+        if (methodName.equalsIgnoreCase(APIUtils.METHOD_UPDATE_DEVICEID)) {
             try {
                 jsonObject = new JSONObject(params);
             } catch (Exception e) {

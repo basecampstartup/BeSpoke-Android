@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +31,6 @@ import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
-import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.TicketStatus;
 import com.bespoke.utils.Utils;
 import com.google.gson.Gson;
@@ -42,13 +39,10 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
-public class UpdateIssueActivity extends AppCompatActivity implements  View.OnClickListener, APIRequestCallback{
+public class UpdateRequestActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback{
     private Toolbar mToolbar;
     private Context mContext;
     Button btnUpdateTicket, btnCancel;
@@ -66,7 +60,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_issue);
+        setContentView(R.layout.activity_update_request);
         mContext=this;
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -79,7 +73,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
         loader.setCancelable(false);
         Intent intent = getIntent();
         model= (TicketModel) intent.getExtras().getSerializable("SelectedModel");
-        selectTicketStatusText=TicketStatus.keyToEnum(model.getTicketstatus()).toString();
+        selectTicketStatusText= TicketStatus.keyToEnum(model.getTicketstatus()).toString();
         selectedUserName=model.getAssignedToName();
         setDataOnComponents(model);
         if (CheckNetwork.isInternetAvailable(mContext)) {
@@ -91,9 +85,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
         }
-
     }
-
     /**
      * Initialize the UI components.
      */
@@ -133,7 +125,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
-        UserListDialogAdapter userListDialogAdapter = new UserListDialogAdapter(UpdateIssueActivity.this, userList);
+        UserListDialogAdapter userListDialogAdapter = new UserListDialogAdapter(UpdateRequestActivity.this, userList);
         lv.setAdapter(userListDialogAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -203,9 +195,6 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
         switch (v.getId()) {
             case R.id.btnUpdateTicket:
                 confirmationAlertDialog(getResources().getString(R.string.Alert),getResources().getString(R.string.ConfirmCloseTicket));
-                break;
-            case R.id.btnCancel:
-                this.finish();
                 break;
             case R.id.tvAssignedToValue:
                 showUserListDialog();
@@ -317,6 +306,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
             }
         });
     }
+
     /**
      * To display alert dialog for invalid fields
      *
@@ -353,7 +343,7 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
      */
     public void confirmationAlertDialog(String title, String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                UpdateIssueActivity.this);
+                UpdateRequestActivity.this);
         // set title
         alertDialogBuilder.setTitle(title);
         // set dialog message
@@ -373,9 +363,9 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
                             String json = gson.toJson(model, type);
                             HashMap<String, String> retMap = new Gson().fromJson(json, new TypeToken<HashMap<String, String>>() {}.getType());
                             Log.e("RequestJSon",json);
-                                loader.show();
-                                new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_TICKET, retMap);
-                                //Call API Request after check internet connection
+                            loader.show();
+                            new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_TICKET, retMap);
+                            //Call API Request after check internet connection
                         } else {
                             Utils.alertDialog(mContext,getResources().getString(R.string.Alert),mContext.getString(R.string.MessageNoInternetConnection));
                         }
@@ -395,9 +385,8 @@ public class UpdateIssueActivity extends AppCompatActivity implements  View.OnCl
         // show it
         alertDialog.show();
         // change color of delete text
-        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(UpdateIssueActivity.this.getResources().getColor(R.color.colorButtonBG));
-        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(UpdateIssueActivity.this.getResources().getColor(R.color.colorBlack));
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(UpdateRequestActivity.this.getResources().getColor(R.color.colorButtonBG));
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(UpdateRequestActivity.this.getResources().getColor(R.color.colorBlack));
     }
-
 
 }

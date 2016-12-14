@@ -3,23 +3,26 @@ package com.bespoke;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bespoke.Model.Category;
-import com.bespoke.Model.UserModel;
 import com.bespoke.adapter.CategoryListDialogAdapter;
 import com.bespoke.callback.APIRequestCallback;
+import com.bespoke.commons.Commons;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
@@ -29,7 +32,6 @@ import com.bespoke.utils.Utils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class CategoryActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener {
@@ -37,7 +39,12 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
     private Context mContext;
     private ProgressDialog loader = null;
     ArrayList<Category> categoryList;
-    TextView tvCategory;
+    TextView tvSelectCategoryLbl,tvSelectCategory;
+
+    EditText edtCategoryName,edtSubCategoryName;
+    Button btnCreateCategory,btnCreateSubCategory;
+
+    private long mLastClickTime = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +56,7 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.LeftPanelCategory));
-        tvCategory=(TextView)findViewById(R.id.tvSelectCategory);
-        tvCategory.setOnClickListener(this);
+        initializeComponents();
         //set loader
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
@@ -63,7 +69,21 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
             Utils.alertDialog(mContext,getResources().getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));
         }
     }
-
+    /**
+     * Initialize the UI components.
+     */
+    public void initializeComponents() {
+        tvSelectCategoryLbl = (TextView) findViewById(R.id.tvSelectCategoryLbl);
+        tvSelectCategory = (TextView) findViewById(R.id.tvSelectCategory);
+        tvSelectCategoryLbl.setOnClickListener(this);
+        tvSelectCategory.setOnClickListener(this);
+        edtCategoryName = (EditText) findViewById(R.id.edtCategoryName);
+        edtSubCategoryName = (EditText) findViewById(R.id.edtSubCategoryName);
+        btnCreateCategory = (Button) findViewById(R.id.btnCreateCategory);
+        btnCreateSubCategory = (Button) findViewById(R.id.btnCreateSubCategory);
+        btnCreateCategory.setOnClickListener(this);
+        btnCreateSubCategory.setOnClickListener(this);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -75,6 +95,45 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         }
     }
 
+    /**
+     * This method will validate Category name when user create New Category.
+     * @return
+     */
+    public boolean validateCategoryItem()
+    {
+        boolean valid = true;
+        String strCategoryName = edtCategoryName.getText().toString();
+
+        if (strCategoryName.isEmpty()) {
+            edtCategoryName.setError(getString(R.string.EnterCategoryName));
+            valid = false;
+        } else {
+            edtCategoryName.setError(null);
+        }
+        return valid;
+    }
+
+    /**
+     * This method will validate Category name when user create New Category.
+     * @return
+     */
+    public boolean validateSubCategoryItem()
+    {
+        boolean valid = true;
+        String strCategoryName = tvSelectCategory.getText().toString();
+        if (strCategoryName.equalsIgnoreCase(getResources().getString(R.string.Categorytxt))) {
+            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectCategoryAlert));
+            return false;
+        }
+        String strSubCategoryName = edtSubCategoryName.getText().toString();
+        if (strSubCategoryName.isEmpty()) {
+            edtSubCategoryName.setError(getString(R.string.EnterCategoryName));
+            valid = false;
+        } else {
+            edtSubCategoryName.setError(null);
+        }
+        return valid;
+    }
 
     @Override
     public void onBackPressed() {
@@ -86,8 +145,50 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
     public void onClick(View v) {
         switch (v.getId()) {
 
+            case R.id.tvSelectCategoryLbl:
+                showCategoryDialog();
+                break;
             case R.id.tvSelectCategory:
-            showCategoryDialog();
+                showCategoryDialog();
+                break;
+            case R.id.btnCreateCategory:
+                if (!validateCategoryItem()) return;
+
+                String strCategoryName = edtCategoryName.getText().toString().trim();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (CheckNetwork.isInternetAvailable(mContext)) {
+                    loader.show();
+                    HashMap<String, String> requestMap = new HashMap<>();
+                    requestMap.put(APIUtils.CATEGORY_NAME, strCategoryName);
+                    //Call API Request after check internet connection
+                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_CATEGORY, requestMap);
+                } else {
+                    Utils.alertDialog(mContext, mContext.getString(R.string.Alert), getResources().getString(R.string.MessageNoInternetConnection));
+                }
+
+                break;
+            case R.id.btnCreateSubCategory:
+                if (!validateSubCategoryItem()) return;
+                String strSubCategoryName = edtSubCategoryName.getText().toString().trim();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                if (CheckNetwork.isInternetAvailable(mContext)) {
+                    loader.show();
+                    HashMap<String, String> requestMap = new HashMap<>();
+                    requestMap.put(APIUtils.SUB_CATEGORY_NAME, strSubCategoryName);
+                    requestMap.put(APIUtils.CATEGORY_ID, String.valueOf(selectedCategoryId));
+                    //Call API Request after check internet connection
+                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_SUB_CATEGORY, requestMap);
+                } else {
+                    Utils.alertDialog(mContext, mContext.getString(R.string.Alert), getResources().getString(R.string.MessageNoInternetConnection));
+                }
+
                 break;
 
             default:
@@ -134,6 +235,90 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 e.printStackTrace();
             }
         }
+        if (APIUtils.METHOD_CREATE_CATEGORY.equalsIgnoreCase(name)) {
+            try {
+                final JSONObject responseObject = new JSONObject(object.toString());
+                String error = responseObject.optString("error");
+                if (TextUtils.isEmpty(error)) {
+                    String success = responseObject.optString("success");
+                    if (success.equalsIgnoreCase("true")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                categoryCreatedSucessDialog(getResources().getString(R.string.CategoryCreatedSuccessfully));
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
+                            }
+                        });
+
+                    }
+                }else {
+                    // In case of error occured.
+                    final String message = responseObject.optString("message");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
+                            //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (APIUtils.METHOD_CREATE_SUB_CATEGORY.equalsIgnoreCase(name)) {
+            try {
+                final JSONObject responseObject = new JSONObject(object.toString());
+                String error = responseObject.optString("error");
+                if (TextUtils.isEmpty(error)) {
+                    String success = responseObject.optString("success");
+                    if (success.equalsIgnoreCase("true")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                subCategoryCreatedSucessDialog(getResources().getString(R.string.SubCategoryCreatedSuccessfully));
+
+                            }
+                        });
+                    }
+                    else
+                    {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
+                            }
+                        });
+
+                    }
+                }else {
+                    // In case of error occured.
+                    final String message = responseObject.optString("message");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
+                            //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -162,7 +347,8 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Category  selectedCategory = categoryList.get(position);
-                tvCategory.setText(selectedCategory.getCategory());
+                selectedCategoryId = selectedCategory.getCat_id();
+                tvSelectCategory.setText(selectedCategory.getCategory());
                 dialog.dismiss();
             }
         });
@@ -171,5 +357,58 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
 
     }
 
+    /**
+     * To display alert dialog for Category created Successfully
+     *
+     * @param message (msg to display)
+     */
+    public void categoryCreatedSucessDialog(String message) {
+        ;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                 dialog.cancel();
+                 edtCategoryName.setText("");
+                 if (CheckNetwork.isInternetAvailable(mContext)) {
+                 loader.show();
+                 //Call API Request after check internet connection
+                 new CommunicatorNew(mContext, Request.Method.GET, APIUtils.METHOD_GET_ALL_CATEGORY, new HashMap<String, String>());
+                 } else {
+                 //Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
+                 Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.MessageNoInternetConnection));
+                 }
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 
+
+    /**
+     * To display alert dialog for SubCategory created Successfully
+     *
+     * @param message (msg to display)
+     */
+    public void subCategoryCreatedSucessDialog(String message) {
+        ;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        edtSubCategoryName.setText("");
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 }

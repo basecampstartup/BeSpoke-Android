@@ -7,12 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.servercommunication.APIUtils;
@@ -26,7 +28,9 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
     Button btnCloseTicket,btnEmailUser;
     private TextView tvIdValue,tvShortDescriptionValue,tvDescriptionValue,tvCategoryValue,tvAffectedAreaValue,tvUserValue,tvIssueOpenDateValue,tvAssignedToValue,tvStatusValue;
     private ProgressDialog loader = null;
-    TicketModel model;
+    IssueModel model;
+
+    boolean isRecordUpdated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +46,7 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
         loader.setCancelable(false);
         initializeComponents();
         Intent intent = getIntent();
-        model= (TicketModel) intent.getExtras().getSerializable("SelectedModel");
+        model= (IssueModel) intent.getExtras().getSerializable("SelectedModel");
         setDataOnComponents(model);
     }
     /**
@@ -65,11 +69,23 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.issue_detail_menu, menu);
+        (menu.findItem(R.id.menuUpdate)).setVisible(true);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menuUpdate:
+                Intent i=new Intent(RequestDetailActivity.this,UpdateIssueActivity.class);
+                i.putExtra("SelectedModel", model);
+                startActivityForResult(i,1);
+                return  true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -87,8 +103,9 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        if(isRecordUpdated)
+            setResult(1);
+            finish();
     }
     @Override
     public void onSuccess(String name, Object object) {
@@ -106,7 +123,7 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-    public void setDataOnComponents(TicketModel model)
+    public void setDataOnComponents(IssueModel model)
     {
         tvIdValue.setText(model.getTicket_id());
         tvShortDescriptionValue.setText(model.getShortdesc());
@@ -118,6 +135,18 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
         tvAssignedToValue.setText(model.getAssignedToName());
         tvStatusValue.setText(TicketStatus.keyToEnum(model.getTicketstatus()).toString());
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==1)
+        {
+            String updatedAssignedToName=data.getStringExtra("AssignedToName");
+            String updatedStatus=data.getStringExtra("TicketStatus");
+            tvAssignedToValue.setText(updatedAssignedToName);
+            tvStatusValue.setText(updatedStatus);
+            isRecordUpdated=true;
 
+        }
+    }
 
 }

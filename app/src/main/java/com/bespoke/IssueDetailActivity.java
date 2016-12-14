@@ -36,6 +36,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView tvIdValue,tvShortDescriptionValue,tvDescriptionValue,tvCategoryValue,tvAffectedAreaValue,tvUserValue,tvIssueOpenDateValue,tvAssignedToValue,tvStatusValue;
     private ProgressDialog loader = null;
     TicketModel model;
+    boolean isRecordUpdated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,10 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
+    /**
+     * This method will set all model data of issue to UI components.
+     * @param model
+     */
     public void setDataOnComponents(TicketModel model)
     {
       tvIdValue.setText(model.getTicket_id());
@@ -89,19 +93,34 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         tvStatusValue=(TextView)findViewById(R.id.tvTicketStatusValue);
     }
 
+    /**
+     * This is the overrided method to show option menu  items on header or Appbar.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.issue_detail_menu, menu);
+        (menu.findItem(R.id.menuUpdate)).setVisible(true);
         return true;
     }
 
+    /**
+     * Overrided method for handling menu option item clicks.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.menuUpdate:
+                Intent i=new Intent(IssueDetailActivity.this,UpdateIssueActivity.class);
+                i.putExtra("SelectedModel", model);
+                startActivityForResult(i,1);
+                return  true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -121,8 +140,10 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+        //super.onBackPressed();
+        if(isRecordUpdated)
+        setResult(1);
+        finish();
     }
 
 
@@ -151,7 +172,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
                             map.put(APIUtils.TICKET_STATUS,TicketStatus.CLOSED.getId()+"");
                             map.put(APIUtils.TICKET_ID,String.valueOf(model.getTicket_id()));
                             map.put(APIUtils.TICKET_TYPE,String.valueOf(model.getTickettype()));
-                            new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_TICKET, map);
+                            new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_TICKET_STATUS, map);
                         } else {
                             Utils.alertDialog(mContext,getResources().getString(R.string.Alert),mContext.getString(R.string.MessageNoInternetConnection));
                         }
@@ -178,7 +199,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onSuccess(String name, Object object) {
 
-        if (APIUtils.METHOD_UPDATE_TICKET.equalsIgnoreCase(name)) {
+        if (APIUtils.METHOD_UPDATE_TICKET_STATUS.equalsIgnoreCase(name)) {
             try {
                 final JSONObject responseObject = new JSONObject(object.toString());
                 String error = responseObject.optString("error");
@@ -258,4 +279,19 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         // show it
         alertDialog.show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==1)
+        {
+            String updatedAssignedToName=data.getStringExtra("AssignedToName");
+            String updatedStatus=data.getStringExtra("TicketStatus");
+            tvAssignedToValue.setText(updatedAssignedToName);
+            tvStatusValue.setText(updatedStatus);
+            isRecordUpdated=true;
+
+        }
+    }
+
 }

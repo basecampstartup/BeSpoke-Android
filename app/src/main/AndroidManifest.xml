@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".BeSpokeApplication"
@@ -100,7 +101,25 @@
             android:name=".RequestDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
-        <activity android:name=".UpdateIssueActivity"></activity>
+        <activity
+            android:name=".UpdateIssueActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".UpdateRequestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base"></activity>
+        <!-- Defining Services -->
+        <service android:name=".fcmservices.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".fcmservices.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
