@@ -16,7 +16,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
     </LinearLayout>
-    <RelativeLayout
+<!--    <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,5 +30,14 @@
             android:layout_marginTop="@dimen/dim_padding_5dp"
             android:text="@string/LeftPanelDocuments"
             />
-    </RelativeLayout>
+    </RelativeLayout>-->
+
+    <ListView
+        android:id="@+id/lstCategory"
+        android:layout_below="@+id/container_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null" />
+
+
 </RelativeLayout>

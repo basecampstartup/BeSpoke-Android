@@ -1,10 +1,10 @@
 [
     {
-        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\drawable-land\\mdtp_done_background_color_dark.xml",
-        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable-land\\mdtp_done_background_color_dark.xml"
+        "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\drawable-land\\mdtp_done_background_color.xml",
+        "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable-land\\mdtp_done_background_color.xml"
     },
     {
-        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\drawable-land\\mdtp_done_background_color.xml",
-        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable-land\\mdtp_done_background_color.xml"
+        "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\drawable-land\\mdtp_done_background_color_dark.xml",
+        "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable-land\\mdtp_done_background_color_dark.xml"
     }
 ]
