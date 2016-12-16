@@ -4,8 +4,24 @@
         "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\circle.xml"
     },
     {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_done_background_color_dark.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_done_background_color_dark.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_material_button_background.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_material_button_background.xml"
+    },
+    {
         "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_material_button_background.xml",
         "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_material_button_background.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_done_background_color.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_done_background_color.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_material_button_selected.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_material_button_selected.xml"
     },
     {
         "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_material_button_selected.xml",
@@ -18,5 +34,9 @@
     {
         "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\mdtp_done_background_color_dark.xml",
         "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\mdtp_done_background_color_dark.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\drawable\\circle.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\drawable\\circle.xml"
     }
 ]

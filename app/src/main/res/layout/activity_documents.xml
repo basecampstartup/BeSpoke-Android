@@ -4,8 +4,8 @@
     android:id="@+id/activity_documents"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.bespoke.DocumentsActivity">
+    android:background="@drawable/background"
+    tools:context="com.bespoke.DocumentsCategoryActivity">
     <LinearLayout
         android:id="@+id/container_toolbar"
         android:layout_width="match_parent"

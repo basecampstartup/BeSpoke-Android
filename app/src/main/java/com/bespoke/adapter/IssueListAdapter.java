@@ -1,25 +1,25 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 21/11/2016
+//===============================================================================
 package com.bespoke.adapter;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.bespoke.Model.IssueModel;
-import com.bespoke.Model.TicketModel;
 import com.bespoke.R;
 import com.bespoke.utils.TicketStatus;
-
 import java.util.ArrayList;
 
-/**
- * Created by admin on 11/9/2016.
- */
-
 public class IssueListAdapter extends BaseAdapter {
-
+    /** context of current Activity */
     private Context mContext;
+
     private ArrayList<IssueModel> ticketModels;
     private LayoutInflater lInflater;
 
@@ -70,10 +70,10 @@ public class IssueListAdapter extends BaseAdapter {
         viewHolder.tvOpenDate.setText(ticketModels.get(position).getTicketopendate());
         viewHolder.tvAssignedTo.setText(ticketModels.get(position).getAssignedToName());
         viewHolder.tvStatus.setText(TicketStatus.keyToEnum(ticketModels.get(position).getTicketstatus()).toString());
-
         return convertView;
     }
 
+    //Holder class for Adapter UI components.
     public static class ViewHolder {
         public TextView tvIssueID;
         public TextView tvDescription;

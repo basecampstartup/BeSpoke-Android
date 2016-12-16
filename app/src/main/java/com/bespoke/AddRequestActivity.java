@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 09/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Dialog;
@@ -37,6 +42,7 @@ import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
 import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.TicketStatus;
+import com.bespoke.utils.UserTypeEnum;
 import com.bespoke.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -56,6 +62,7 @@ import java.util.TimeZone;
 public class AddRequestActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener{
 
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
 
     private ProgressDialog loader = null;
@@ -82,6 +89,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     private int d = 0, mon = 0, y = 0;
     private static String DISPLAY_DATE_FORMAT = "MMM d, yyyy";
+    private  boolean isNormalUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +101,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.AddRequest));
         initializeComponents();
-
         setCurrentDateTimeFields();
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
@@ -104,6 +111,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             new CommunicatorNew(mContext, Request.Method.GET, APIUtils.METHOD_GET_ALL_CATEGORY, new HashMap<String, String>());
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
+        }
+
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        if (UserTypeEnum.NORMALUSER.getId() == Integer.parseInt(usertype)) {
+            isNormalUser = true;
+            tvAssignedTo.setText("");
+            tvTicketStatusValue.setText(TicketStatus.OPEN.toString());
+            tvTicketStatusValue.setEnabled(false);
+            tvTicketStatusLbl.setEnabled(false);
+            tvAssignedToLbl.setEnabled(false);
+            tvAssignedTo.setEnabled(false);
+            selectedTicketStatusId =  TicketStatus.OPEN.getId();
+            selectedUserId="";
         }
     }
     /**
@@ -134,13 +154,14 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         edtDescription = (EditText) findViewById(R.id.edtDescription);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         btnSubmitTicket = (Button) findViewById(R.id.btnSubmitTicket);
-
         btnSubmitTicket.setOnClickListener(this);
         Utils.hideSoftKeyboard(mContext,edtShortDescription);
         tvUserName.setText(AppSPrefs.getString(Commons.USER_NAME));
-
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -158,8 +179,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-
-
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -184,7 +208,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         }
                     });
                 } else {
-                    // In case of error occured.
+                    // Show message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -199,8 +223,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-
-
         if (APIUtils.METHOD_GET_ALL_SUB_CATEGORY.equalsIgnoreCase(name)) {
             try {
                 final JSONObject responseObject = new JSONObject(object.toString());
@@ -216,7 +238,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                         }
                     });
                 } else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -225,15 +247,12 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
-
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
         if (APIUtils.METHOD_GET_USER_BY_TYPE.equalsIgnoreCase(name)) {
             try {
                 final JSONObject responseObject = new JSONObject(object.toString());
@@ -246,10 +265,8 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             userList = ResponseParser.parseUserResponse(responseObject);
                         }
                     });
-
-
                 } else {
-                    // error msg here
+                    // Show Error message in case of any failure in Server API call.
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -257,14 +274,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
         if (APIUtils.METHOD_CREATE_TICKET.equalsIgnoreCase(name)) {
             try {
                 final JSONObject responseObject = new JSONObject(object.toString());
@@ -276,22 +290,21 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void run() {
                                 issueCreatedSucessDialog(getResources().getString(R.string.RequestCreatedSuccessfully));
-
                             }
                         });
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
                             }
                         });
-
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -300,17 +313,19 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                             //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
-
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -324,7 +339,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    //getSubCategoryList by category ID
+    /**
+     * getSubCategoryList by category ID
+     * @param categoryId
+     * @return
+     */
     public ArrayList<SubCategoryModel> getSubCategoryListByCategory(int categoryId) {
         ArrayList<SubCategoryModel> subCategoryModelList = new ArrayList<>();
         for (int i = 0; i < subCategoryList.size(); i++) {
@@ -336,14 +355,13 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * this method will show the category list dropdown
+     * This method will show the category list dropdown.
      */
     public void showCategoryDialog() {
 
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
-
         CategoryListDialogAdapter applianceListDialogAdapter = new CategoryListDialogAdapter(AddRequestActivity.this, categoryList);
         lv.setAdapter(applianceListDialogAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -354,29 +372,26 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 tvSelectCategory.setText(selectedCategory.getCategory());
                 tvSelectAffectedArea.setText(getResources().getString(R.string.AffectedAreatxt));
                 dialog.dismiss();
-
             }
         });
         dialog.setContentView(view);
         dialog.show();
-
-
     }
 
-
-
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.btnSubmitTicket:
                 if(!validate()) return;
                 if(!validateDropDowns())return;
-
+                //This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
-
                 mLastClickTime = SystemClock.elapsedRealtime();
                 processRequestData();
                 Gson gson = new Gson();
@@ -386,14 +401,11 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                 Log.e("RequestJSon",json);
                 if (CheckNetwork.isInternetAvailable(mContext)) {
                     loader.show();
-                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_TICKET, requestMap);
                     //Call API Request after check internet connection
+                    new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_CREATE_TICKET, requestMap);
                 } else {
                     Utils.alertDialog(mContext,mContext.getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));
-                    //Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
                 }
-
-
                 break;
             case R.id.tvSelectCategory:
                 showCategoryDialog();
@@ -407,7 +419,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             case R.id.tvSelectAffectedArea:
                 showSubCategoryDialog();
                 break;
-
             case R.id.tvTicketStatusLbl:
                 showTicketStatusDialog();
                 break;
@@ -430,6 +441,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    /**
+     * It will show Subcategory list in dialog for selected Category
+     */
     public void showSubCategoryDialog() {
         activeSubCategoryList = getSubCategoryListByCategory(selectedCategoryId);
         if (activeSubCategoryList.size() <= 0) {
@@ -454,8 +468,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
-
-
+    /**
+     * It will show Tickeet status dialog .
+     */
     public void showTicketStatusDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -479,8 +494,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
-
-
+    /**
+     * It will show Users list in dialog.
+     */
     public void showUserListDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -501,6 +517,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
+    /**
+     * It will return Ticket status label list.
+     */
     public ArrayList<String> getTicketStatusLabelList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Open");
@@ -509,6 +528,9 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         return list;
     }
 
+    /**
+     * It will return Ticket status ID list.
+     */
     public ArrayList<String> getTicketStatusIdList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("1");
@@ -519,7 +541,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     /**
      * This method validate all the required fields.
-     *
      * @return
      */
     public boolean validate() {
@@ -566,22 +587,17 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
             return false;
         }
-        if (strAssignedTo.equalsIgnoreCase(getResources().getString(R.string.AssignedTotxt))) {
-            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
-            return false;
-        }
         return true;
     }
 
     /**
-     * method to open date picker
+     * method to open Date picker
      */
     private void openDatePicker() {
         // open date picker for start date
         com.wdullaer.materialdatetimepicker.date.DatePickerDialog dpd = com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(AddRequestActivity.this, y, mon, d);
         dpd.show(getFragmentManager(), "Datepickerdialog");
     }
-
 
     /**
      * To set current date and time in date-time text fields
@@ -594,8 +610,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         d = now.get(Calendar.DAY_OF_MONTH);
         Log.v("Calendar11", "At setCurrentDataTimeFields: Time Value Start:" + y + ":" + mon + ":" + d);
         Date startDate = getDateByTime(y, mon, d);
-        //tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, startDate, DateStyleEnum.StyleType.MEDIUM));
-        //tvSelectIssueOpenDateVal.setTag(getCustomDateFormat(startDate));
         String dateString =  y + "-" + (mon + 1) + "-" + d;
         SimpleDateFormat mdyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Date dateObj=null;
@@ -611,7 +625,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     /**
      * To get the date as per all the parameters
-     *
      * @param y   : year
      * @param mon :month
      * @param d   :day
@@ -627,7 +640,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     /**
      * method to return formatted date with US locale
-     *
      * @param mDate
      * @return
      */
@@ -635,6 +647,15 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         DateFormat fmt = new SimpleDateFormat(DISPLAY_DATE_FORMAT, Locale.US);
         return fmt.format(mDate);
     }
+
+    /**
+     * Overridden method of Date picker for selecting date.
+     * @param view The view associated with this listener.
+     * @param year The year that was set.
+     * @param monthOfYear The month that was set (0-11) for compatibility
+     *            with {@link java.util.Calendar}.
+     * @param dayOfMonth The day of the month that was set.
+     */
     @Override
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
@@ -642,7 +663,6 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         try {
             SimpleDateFormat mdyFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date dateObj = mdyFormat.parse(date);
-            //tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, dateObj, DateStyleEnum.StyleType.MEDIUM));
             SimpleDateFormat mdyFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date dateObj1=null;
             try {
@@ -652,21 +672,17 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
             }
             String dt=mdyFormat1.format(dateObj);
             tvSelectIssueOpenDateVal.setText(dt);
-            //   previousStartDate = textStartDate.getTag().toString() + " " + textStartTime.getTag().toString();
             selectedDateString=dt;
             setDatePickerDate(dayOfMonth, monthOfYear, year);
-
-
         } catch (Exception e) {
-
+             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onDateCancel() {
-
     }
+
     /**
      * To set Date in Picker which was selected
      */
@@ -675,6 +691,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
         mon = month;
         y = year;
     }
+
     IssueModel model;
     public void processRequestData()
     {
@@ -699,13 +716,10 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-
     /**
      * To display alert dialog for invalid fields
-     *
      * @param message (msg to display)
      */
-
     public void issueCreatedSucessDialog(String message) {
         ;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -721,7 +735,7 @@ public class AddRequestActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
         final AlertDialog alertDialog = alertDialogBuilder.create();
-        // show it
+        // Show the Alert Dialog.
         alertDialog.show();
     }
 }

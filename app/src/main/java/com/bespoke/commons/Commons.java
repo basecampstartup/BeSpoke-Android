@@ -1,8 +1,9 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 25/11/2016
+//===============================================================================
 package com.bespoke.commons;
-
-/**
- * Created by admin on 11/23/2016.
- */
 
 public class Commons {
     public static final float THRESHOLD_TIME_POST_SCREEN = 1500;
@@ -25,7 +26,6 @@ public class Commons {
 
     public static final byte TICKET_TYPE_ISSUE = 1;
     public static final byte TICKET_TYPE_REQUEST = 2;
-
     public static final byte DEVICE_TYPE_IOS = 1;
     public static final byte DEVICE_TYPE_ANDROID = 2;
 }

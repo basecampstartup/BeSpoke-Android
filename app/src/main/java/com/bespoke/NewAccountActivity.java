@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 29/11/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -41,6 +46,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
     String strEmail,strPassword,strReEnteredPassword,strUserName,strUserType;
     RadioGroup radGroupRole;
     RadioButton radAdmin,radSuperAdmin,radNormalUser;
+    /** context of current Activity */
     private Context mContext;
     private ProgressDialog loader = null;
     @Override
@@ -74,12 +80,16 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         txtAlreadyRegistered.setOnClickListener(this);
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnCreateAccount:
 
-                //This will check if your click on button successively.
+                //This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
@@ -138,7 +148,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
 
     /**
      * This method validate all the required fields.
-     *
      * @return
      */
     public boolean validate() {
@@ -190,6 +199,11 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         return map;
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -221,17 +235,18 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
-                                //Toast.makeText(mContext, "Error in Registration please try again later!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                     }
                 }
                 else {
+                    // Show Error message in case of any failure in Server API call.
                     final String messageFromServer = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -247,6 +262,12 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {

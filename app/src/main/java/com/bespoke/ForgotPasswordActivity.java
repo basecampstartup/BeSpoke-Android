@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 06/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -41,6 +46,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     String strEmail,strPassword,strReEnteredPassword;
     Button btnResetPassword, btnCancel;
     private ProgressDialog loader = null;
+    /** context of current Activity */
     private Context mContext;
     private long mLastClickTime = 0;
     @Override
@@ -67,11 +73,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         edtConfirmPassword = (EditText) findViewById(R.id.edtConfirmPassword);
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnResetPassword:
-                //This will check if your click on button successively.
+                // This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
@@ -100,6 +110,11 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -125,18 +140,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                             public void run() {
                                 String message=responseObject.optString("message");
                                 SuccessDialog(message);
-                                //Toast.makeText(mContext, "Your Password reset Successfully", Toast.LENGTH_SHORT).show();
-                              /*  startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
-                                finish();*/
                             }
                         });
                     }
                     else{
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.SomethingWentWrong));
-                               // Toast.makeText(mContext, "Something went wrong please try again later!", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -144,8 +156,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Show Error message in case of any failure in Server API call.
                             String message = responseObject.optString("message");
-                            //Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
@@ -156,6 +168,11 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -173,7 +190,6 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     /**
      * This method validate all the required fields.
-     *
      * @return
      */
     public boolean validate() {

@@ -5,8 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".BeSpokeApplication"
         android:allowBackup="true"
@@ -20,13 +19,9 @@
             android:theme="@style/AppTheme.Base">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
@@ -58,7 +53,7 @@
             android:theme="@style/AppTheme.Base"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".DocumentsActivity"
+            android:name=".DocumentsCategoryActivity"
             android:label="@string/LeftPanelDocuments"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" />
@@ -87,11 +82,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".ChartActivity"
-            android:label="@string/title_activity_chart"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".AddRequestActivity"
             android:screenOrientation="portrait"
@@ -108,7 +99,16 @@
         <activity
             android:name=".UpdateRequestActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".DocumentsListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base" />
+        <activity
+            android:name=".WebViewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base"></activity>
+
         <!-- Defining Services -->
         <service android:name=".fcmservices.MyFirebaseMessagingService">
             <intent-filter>

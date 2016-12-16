@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 21/11/2016
+//===============================================================================
 package com.bespoke.adapter;
 
 import android.content.Context;
@@ -11,13 +16,10 @@ import com.bespoke.Model.Category;
 
 import java.util.ArrayList;
 
-/**
- * Created by admin on 11/17/2016.
- */
-
 public class CategoryListDialogAdapter extends BaseAdapter {
-
+    /** context of current Activity */
     Context mContext;
+
     ArrayList<Category> categoryList;
     private LayoutInflater layoutInflater;
 
@@ -57,6 +59,7 @@ public class CategoryListDialogAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //Holder class for Adapter UI components.
     static class ViewHolder {
         TextView txtApplianceName;
     }

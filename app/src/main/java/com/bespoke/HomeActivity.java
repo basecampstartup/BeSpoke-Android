@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 05/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.content.Context;
@@ -5,15 +10,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,23 +23,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
-import com.bespoke.fcmservices.MyFirebaseInstanceIDService;
-import com.bespoke.fragments.HomeFragment;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.sprefs.AppSPrefs;
-import com.bespoke.utils.TicketStatus;
-import com.bespoke.utils.Utils;
+import com.bespoke.utils.UserTypeEnum;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
@@ -49,6 +46,7 @@ public class HomeActivity extends AppCompatActivity
     private LinearLayout llViewIssues, llViewRequests, llDocuments,llCataegoryHome;
     ImageView btnViewIssues,btnViewRequests,btnDocuments,btnReports;
     private DrawerLayout drawer;
+    /** context of current Activity */
     private Context mContext;
     TextView tvUsername;
     private LinearLayout LeftPanelLogoutPanel,LeftPanelHome,LeftPanelViewIssues,
@@ -66,6 +64,12 @@ public class HomeActivity extends AppCompatActivity
         toggle.syncState();
         mContext=this;
         initializeComponents();
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        if(UserTypeEnum.NORMALUSER.getId()==Integer.parseInt(usertype))
+        {
+            llCataegoryHome.setVisibility(View.INVISIBLE);
+            LeftPanelCategory.setVisibility(View.GONE);
+        }
         if (CheckNetwork.isInternetAvailable(mContext)) {
          new CallRegisterDeviceAPI().execute();
   }
@@ -73,6 +77,9 @@ public class HomeActivity extends AppCompatActivity
       //  setFragment(new HomeFragment());
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -172,6 +179,10 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         closeDrawer();
@@ -186,7 +197,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(mContext, ViewRequestsActivity.class));
                 break;
             case R.id.llDocuments:
-                startActivity(new Intent(mContext, DocumentsActivity.class));
+                startActivity(new Intent(mContext, DocumentsCategoryActivity.class));
                 break;
             case R.id.llCataegoryHome:
                 startActivity(new Intent(mContext, CategoryActivity.class));
@@ -204,7 +215,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(mContext, ViewRequestsActivity.class));
                 break;
             case R.id.LeftPanelDocuments:
-                startActivity(new Intent(mContext, DocumentsActivity.class));
+                startActivity(new Intent(mContext, DocumentsCategoryActivity.class));
                 break;
             case R.id.LeftPanelReports:
                 //  setFragment(new HomeFragment());
@@ -225,7 +236,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(mContext, ViewRequestsActivity.class));
                 break;
             case R.id.btnDocuments:
-                startActivity(new Intent(mContext, DocumentsActivity.class));
+                startActivity(new Intent(mContext, DocumentsCategoryActivity.class));
                 break;
             case R.id.btnCategory:
                 startActivity(new Intent(mContext, CategoryActivity.class));
@@ -310,11 +321,21 @@ public class HomeActivity extends AppCompatActivity
         }
    }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
 
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
 

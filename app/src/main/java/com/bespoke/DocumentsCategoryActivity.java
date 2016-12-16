@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 15/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -30,10 +35,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DocumentsActivity extends AppCompatActivity implements APIRequestCallback,
+public class DocumentsCategoryActivity extends AppCompatActivity implements APIRequestCallback,
         View.OnTouchListener, AdapterView.OnItemClickListener{
     private Toolbar mToolbar;
     private ProgressDialog loader = null;
+    /** context of current Activity */
     Context mContext;
     ListView lstCategory;
 
@@ -48,11 +54,13 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.LeftPanelDocuments));
+        getSupportActionBar().setTitle(getString(R.string.DocCategory));
         setAllCategory();
     }
 
-
+    /**
+     * This will show all Category list in dialog.
+     */
     private void setAllCategory(){
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
@@ -63,11 +71,14 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
             new CommunicatorNew(mContext, Request.Method.GET, APIUtils.METHOD_GET_ALL_CATEGORY, new HashMap<String,String>());
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
-            loader.dismiss();
         }
     }
 
-
+    /**
+     * Overridden method of menu bar.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -79,7 +90,9 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
         }
     }
 
-
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -91,6 +104,11 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
         return false;
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -117,6 +135,7 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
                     });
                 }
                 else {
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -133,9 +152,11 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
         }
     }
 
-
-
-
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -153,7 +174,9 @@ public class DocumentsActivity extends AppCompatActivity implements APIRequestCa
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Category category = (Category) parent.getItemAtPosition(position);
         int categoryId = category.getCat_id();
-//        Intent intent = new Intent(this, );
-//        startActivity(intent);
+        Intent i=new Intent(DocumentsCategoryActivity.this,DocumentsListActivity.class);
+        i.putExtra("CategoryID", categoryId);
+        startActivity(i);
+
     }
 }

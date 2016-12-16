@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 22/11/2016.
+//===============================================================================
 package com.bespoke.utils;
 
 import android.content.Context;
@@ -27,10 +32,10 @@ public class Utils {
 
     public static final int DRAWABLE_RIGHT = 2;
     /**
+     * This method will return the font which apply on application text.
      * @param context context
      * @param fontId  fontid
      * @return Typeface
-     * This method will return the font which apply on application text.
      */
     public static Typeface getTypeface(Context context, int fontId) {
         Typeface typeface = null;
@@ -92,7 +97,6 @@ public class Utils {
         alertDialog.show();
     }
 
-
     /**
      * @param context
      * @param title
@@ -102,7 +106,6 @@ public class Utils {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         // set title
         alertDialogBuilder.setTitle(title);
-
         // set dialog message
         alertDialogBuilder
                 .setMessage(message)
@@ -115,13 +118,12 @@ public class Utils {
                 });
         final AlertDialog alertDialog = alertDialogBuilder.create();
         try {
-            // show it
+            // Show the alert dialog.
             alertDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     /**
      * Method to return formatted date according to locale
@@ -148,9 +150,9 @@ public class Utils {
                 return "";
         }
     }
+
     /**
      * method to return system locale
-     *
      * @return
      */
     private static Locale getSysLocale(Context context) {
@@ -159,7 +161,6 @@ public class Utils {
 
     /**
      * method to return birth day
-     *
      * @param mDate
      * @return
      */
@@ -172,7 +173,6 @@ public class Utils {
         String dateString = bDate.replace(currentYear, "");
         return dateString.replace(",", "");
     }
-
 
     /**
      * @param context

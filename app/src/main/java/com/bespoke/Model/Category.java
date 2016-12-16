@@ -1,8 +1,9 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 05/12/2016.
+//===============================================================================
 package com.bespoke.Model;
-
-/**
- * Created by admin on 11/29/2016.
- */
 
 public class Category {
     private int cat_id;

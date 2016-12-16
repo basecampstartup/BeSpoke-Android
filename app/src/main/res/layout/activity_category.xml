@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginBottom="@dimen/margin_top_30dp"
-                    android:text="@string/SubmitTicketBtn"></Button>
+                    android:text="@string/Submit"></Button>
 
 
             </LinearLayout>
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:layout_marginBottom="@dimen/margin_10dp"
-                    android:text="@string/SubmitTicketBtn"></Button>
+                    android:text="@string/Submit"></Button>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

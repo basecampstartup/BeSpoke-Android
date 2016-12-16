@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 07/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.content.Context;
@@ -8,6 +13,7 @@ import android.view.MenuItem;
 
 public class ReportsActivity extends AppCompatActivity {
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,9 @@ public class ReportsActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();

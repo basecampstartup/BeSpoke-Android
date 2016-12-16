@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 28/11/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -12,14 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.bespoke.Model.UserModel;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
-import com.bespoke.servercommunication.Communicator;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
 import com.bespoke.sprefs.AppSPrefs;
@@ -33,20 +36,28 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback{
     private final String TAG = getClass().getSimpleName();
+    /** context of current Activity */
     private Context mContext;
+
+    /** Declaring UI components */
     Button btnLogin, btnNewUser;
     EditText edtEmail, edtPassword;
+    TextView txtForgetPassword;
+
+    /** Declaring class variables */
     private long mLastClickTime = 0;
     String strEmail,strPassword;
-    TextView txtForgetPassword;
+
+    /** declare progress dialog */
     private ProgressDialog loader = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mContext=this;
         initializeComponents();
-        //set loader
+        // Initialize progress loading.
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
         loader.setCancelable(false);
@@ -65,12 +76,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txtForgetPassword.setOnClickListener(this);
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
 
-                //This will check if your click on button successively.
+                //This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
@@ -106,7 +121,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * This method validate all the required fields.
-     *
      * @return
      */
     public boolean validate() {
@@ -130,6 +144,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         return valid;
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
+
     @Override
     public void onSuccess(String name, Object object) {
 
@@ -141,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-
+        // Condition to check for Login method response.
         if (APIUtils.METHOD_LOGIN.equalsIgnoreCase(name)) {
             try {
                 final JSONObject responseObject = new JSONObject(object.toString());
@@ -151,6 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Parse user model response.
                             UserModel model= ResponseParser.parseLoginResponse(responseObject);
                             AppSPrefs.setAlreadyLoggedIn(true);
                             AppSPrefs.setString(Commons.USER_NAME, model.getUserName());
@@ -161,7 +182,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             String usertype=AppSPrefs.getString(Commons.USER_TYPE);
                             String email=AppSPrefs.getString(Commons.EMAIL);
                             String userid=AppSPrefs.getString(Commons.USER_ID);
-
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                             finish();
                         }
@@ -169,12 +189,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
                 } else {
-                    // error msg here
+                    // Show Error message in case of any failure in Server API call.
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            // Show message in case of any failure in Server API call.
                             String message = responseObject.optString("message");
-                            //Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
@@ -186,6 +206,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
 

@@ -43,7 +43,8 @@
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/id"
                     android:textColor="@color/colorButtonBG"
-                    android:textSize="@dimen/default_textsize_large" />
+                    android:textSize="@dimen/default_textsize_large"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvIDValue"
@@ -53,11 +54,12 @@
                     android:layout_marginTop="@dimen/margin_10dp"
                     android:text="@string/idtxt"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/default_textsize_large">
+                    android:textSize="@dimen/default_textsize_large"
+                    android:visibility="gone">
 
                 </TextView>
 
-                <include layout="@layout/divider" />
+              <!--  <include layout="@layout/divider" />-->
 
                 <TextView
                     android:id="@+id/tvShortDescriptionLbl"

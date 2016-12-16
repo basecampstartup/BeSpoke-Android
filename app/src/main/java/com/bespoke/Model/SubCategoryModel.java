@@ -1,12 +1,11 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 05/12/2016.
+//===============================================================================
 package com.bespoke.Model;
 
-/**
- * Created by admin on 12/6/2016.
- */
-
 public class SubCategoryModel {
-
-
     private int cat_id;
     private String subcategory;
     private int sub_cat_id;

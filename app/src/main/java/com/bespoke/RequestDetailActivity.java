@@ -1,8 +1,15 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 09/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,25 +18,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.callback.APIRequestCallback;
+import com.bespoke.commons.Commons;
+import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
+import com.bespoke.servercommunication.CommunicatorNew;
+import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.TicketStatus;
+import com.bespoke.utils.UserTypeEnum;
+import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class RequestDetailActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback {
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     Button btnCloseTicket,btnEmailUser;
     private TextView tvIdValue,tvShortDescriptionValue,tvDescriptionValue,tvCategoryValue,tvAffectedAreaValue,tvUserValue,tvIssueOpenDateValue,tvAssignedToValue,tvStatusValue;
     private ProgressDialog loader = null;
     IssueModel model;
-
+    LinearLayout layoutBtns;
     boolean isRecordUpdated=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +58,7 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.IssuesDetail));
+        getSupportActionBar().setTitle(getString(R.string.RequestDetail));
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
         loader.setCancelable(false);
@@ -48,14 +66,21 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
         Intent intent = getIntent();
         model= (IssueModel) intent.getExtras().getSerializable("SelectedModel");
         setDataOnComponents(model);
+        String usertype= AppSPrefs.getString(Commons.USER_TYPE);
+        if(UserTypeEnum.NORMALUSER.getId()==Integer.parseInt(usertype))
+        {
+            layoutBtns.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+        }
+
     }
     /**
      * Initialize the UI components.
      */
     public void initializeComponents() {
-        btnCloseTicket = (Button) findViewById(R.id.btnEmailUser);
+        btnCloseTicket = (Button) findViewById(R.id.btnCloseTicket);
         btnCloseTicket.setOnClickListener(this);
-        btnEmailUser = (Button) findViewById(R.id.btnCloseTicket);
+        btnEmailUser = (Button) findViewById(R.id.btnEmailUser);
         btnEmailUser.setOnClickListener(this);
         tvIdValue=(TextView)findViewById(R.id.tvIDValue);
         tvShortDescriptionValue=(TextView)findViewById(R.id.tvShortDescriptionValue);
@@ -66,12 +91,14 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
         tvIssueOpenDateValue=(TextView)findViewById(R.id.tvIssueOpenDateValue);
         tvAssignedToValue=(TextView)findViewById(R.id.tvAssignedToValue);
         tvStatusValue=(TextView)findViewById(R.id.tvTicketStatusValue);
+        layoutBtns=(LinearLayout)findViewById(R.id.layoutBtns);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.issue_detail_menu, menu);
         (menu.findItem(R.id.menuUpdate)).setVisible(true);
+        (menu.findItem(R.id.menuDoc)).setVisible(true);
         return true;
     }
 
@@ -86,32 +113,125 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
                 i.putExtra("SelectedModel", model);
                 startActivityForResult(i,1);
                 return  true;
+            case R.id.menuDoc:
+                Intent intent=new Intent(RequestDetailActivity.this,DocumentsListActivity.class);
+                intent.putExtra("CategoryID", model.getCat_id());
+                startActivity(intent);
+                return  true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        MenuItem item = (MenuItem) menu.findItem(R.id.menuUpdate);
+        if(UserTypeEnum.NORMALUSER.getId()==Integer.parseInt(usertype))
+        {
+            item.setVisible(false);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnCloseTicket:
+                if(model.getTicketstatus()==TicketStatus.CLOSED.getId())
+                {
+                    Toast.makeText(mContext,getResources().getString(R.string.AlreadyClosed),Toast.LENGTH_LONG).show();
+                }
+                else{
+                    confirmationAlertDialog(getResources().getString(R.string.Alert),getResources().getString(R.string.ConfirmCloseTicket));
+                }
+
                 break;
+            case R.id.btnEmailUser:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, AppSPrefs.getString(Commons.EMAIL));
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                intent.putExtra(Intent.EXTRA_TEXT, "Email body.");
+
+                startActivity(intent);
             default:
                 break;
         }
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         if(isRecordUpdated)
             setResult(1);
             finish();
     }
+
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
+        if (APIUtils.METHOD_UPDATE_TICKET_STATUS.equalsIgnoreCase(name)) {
+            try {
+                final JSONObject responseObject = new JSONObject(object.toString());
+                String error = responseObject.optString("error");
+                if (TextUtils.isEmpty(error)) {
+                    String success = responseObject.optString("success");
+                    if (success.equalsIgnoreCase("true")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                issueUpdateSucessDialog(getResources().getString(R.string.TicketUpdatedSuccessfully));
+                            }
+                        });
+                    }
+                    else
+                    {
+                        // Show Error message in case of any failure in Server API call.
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInUpdateTicket));
+                            }
+                        });
+
+                    }
+                }else {
+                    // Show Error message in case of any failure in Server API call.
+                    final String message = responseObject.optString("message");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
+                        }
+                    });
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -148,5 +268,75 @@ public class RequestDetailActivity extends AppCompatActivity implements View.OnC
 
         }
     }
+    /**
+     * dialog to confirming user to logout.
+     * @param title
+     * @param message
+     */
+    public void confirmationAlertDialog(String title, String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                RequestDetailActivity.this);
+        // set title
+        alertDialogBuilder.setTitle(title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonYes), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        if (CheckNetwork.isInternetAvailable(mContext)) {
+                            loader.show();
+                            HashMap<String,String> map = new HashMap<String, String>();
+                            map.put(APIUtils.TICKET_STATUS,TicketStatus.CLOSED.getId()+"");
+                            map.put(APIUtils.TICKET_ID,String.valueOf(model.getTicket_id()));
+                            map.put(APIUtils.TICKET_TYPE,String.valueOf(model.getTickettype()));
+                            new CommunicatorNew(mContext, Request.Method.POST, APIUtils.METHOD_UPDATE_TICKET_STATUS, map);
+                        } else {
+                            Utils.alertDialog(mContext,getResources().getString(R.string.Alert),mContext.getString(R.string.MessageNoInternetConnection));
+                        }
 
+                        //call close ticket API
+                    }
+                });
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton(getResources().getString(R.string.CommonNo), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+        // change color of delete text
+        alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(RequestDetailActivity.this.getResources().getColor(R.color.colorButtonBG));
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(RequestDetailActivity.this.getResources().getColor(R.color.colorBlack));
+    }
+
+    /**
+     * To display alert dialog for invalid fields
+     *
+     * @param message (msg to display)
+     */
+
+    public void issueUpdateSucessDialog(String message) {
+        ;
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.CommonOK), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        setResult(1);
+                        finish();
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 }

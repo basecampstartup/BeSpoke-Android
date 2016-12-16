@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 12/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Dialog;
@@ -28,19 +33,19 @@ import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
 import com.bespoke.utils.Utils;
-
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CategoryActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener {
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     private ProgressDialog loader = null;
     ArrayList<Category> categoryList;
-    TextView tvSelectCategoryLbl,tvSelectCategory;
 
+    //Declare UI components.
+    TextView tvSelectCategoryLbl,tvSelectCategory;
     EditText edtCategoryName,edtSubCategoryName;
     Button btnCreateCategory,btnCreateSubCategory;
 
@@ -103,7 +108,6 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
     {
         boolean valid = true;
         String strCategoryName = edtCategoryName.getText().toString();
-
         if (strCategoryName.isEmpty()) {
             edtCategoryName.setError(getString(R.string.EnterCategoryName));
             valid = false;
@@ -135,12 +139,19 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         return valid;
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -153,11 +164,12 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 break;
             case R.id.btnCreateCategory:
                 if (!validateCategoryItem()) return;
-
                 String strCategoryName = edtCategoryName.getText().toString().trim();
+                //This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
+                //This will handle  multiple click on button at same time.
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (CheckNetwork.isInternetAvailable(mContext)) {
                     loader.show();
@@ -168,7 +180,6 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 } else {
                     Utils.alertDialog(mContext, mContext.getString(R.string.Alert), getResources().getString(R.string.MessageNoInternetConnection));
                 }
-
                 break;
             case R.id.btnCreateSubCategory:
                 if (!validateSubCategoryItem()) return;
@@ -176,8 +187,8 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
+                //This will handle  multiple click on button at same time.
                 mLastClickTime = SystemClock.elapsedRealtime();
-
                 if (CheckNetwork.isInternetAvailable(mContext)) {
                     loader.show();
                     HashMap<String, String> requestMap = new HashMap<>();
@@ -188,14 +199,16 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 } else {
                     Utils.alertDialog(mContext, mContext.getString(R.string.Alert), getResources().getString(R.string.MessageNoInternetConnection));
                 }
-
                 break;
-
             default:
         }
     }
 
-
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -206,7 +219,6 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                 }
             }
         });
-
         if (APIUtils.METHOD_GET_ALL_CATEGORY.equalsIgnoreCase(name)) {
             try {
                final JSONObject responseObject = new JSONObject(object.toString());
@@ -220,6 +232,7 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                         });
                 }
                 else {
+                    // Show message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -228,9 +241,7 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
-
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -246,33 +257,30 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                             @Override
                             public void run() {
                                 categoryCreatedSucessDialog(getResources().getString(R.string.CategoryCreatedSuccessfully));
-
                             }
                         });
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
                             }
                         });
-
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
-                            //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -288,39 +296,40 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
                             @Override
                             public void run() {
                                 subCategoryCreatedSucessDialog(getResources().getString(R.string.SubCategoryCreatedSuccessfully));
-
                             }
                         });
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
                             }
                         });
-
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
-                            //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -336,8 +345,11 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
 
     int selectedCategoryId;
     int selectedCategory;
-    public void showCategoryDialog() {
 
+    /**
+     *  It will show category list in a dialog.
+     */
+    public void showCategoryDialog() {
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
@@ -359,11 +371,9 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
 
     /**
      * To display alert dialog for Category created Successfully
-     *
      * @param message (msg to display)
      */
     public void categoryCreatedSucessDialog(String message) {
-        ;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // set dialog message
         alertDialogBuilder
@@ -388,14 +398,12 @@ public class CategoryActivity extends AppCompatActivity implements APIRequestCal
         alertDialog.show();
     }
 
-
     /**
      * To display alert dialog for SubCategory created Successfully
      *
      * @param message (msg to display)
      */
     public void subCategoryCreatedSucessDialog(String message) {
-        ;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // set dialog message
         alertDialogBuilder

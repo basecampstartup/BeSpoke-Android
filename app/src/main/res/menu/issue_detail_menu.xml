@@ -2,9 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menuDoc"
+        android:icon="@drawable/ic_help"
+        android:orderInCategory="100"
+        android:title="@string/Edit"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuUpdate"
         android:icon="@drawable/ic_edit_24dp"
         android:orderInCategory="100"
         android:title="@string/Edit"
         app:showAsAction="always" />
+
 </menu>

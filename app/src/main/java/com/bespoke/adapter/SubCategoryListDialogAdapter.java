@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 22/11/2016
+//===============================================================================
 package com.bespoke.adapter;
 
 import android.content.Context;
@@ -7,18 +12,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.bespoke.Model.Category;
 import com.bespoke.Model.SubCategoryModel;
 
 import java.util.ArrayList;
 
-/**
- * Created by admin on 11/17/2016.
- */
-
 public class SubCategoryListDialogAdapter extends BaseAdapter {
-
+    /** context of current Activity */
     Context mContext;
+
     ArrayList<SubCategoryModel> subCategoryList;
     private LayoutInflater layoutInflater;
 
@@ -58,6 +59,7 @@ public class SubCategoryListDialogAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //Holder class for Adapter UI components.
     static class ViewHolder {
         TextView txtApplianceName;
     }

@@ -1,3 +1,9 @@
+
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016
+//===============================================================================
 package com.bespoke.adapter;
 
 import android.content.Context;
@@ -6,19 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.bespoke.Model.Category;
 import com.bespoke.Model.UserModel;
-
 import java.util.ArrayList;
 
-/**
- * Created by admin on 11/17/2016.
- */
-
 public class UserListDialogAdapter extends BaseAdapter {
-
+    /** context of current Activity */
     Context mContext;
+
     ArrayList<UserModel> userList;
     private LayoutInflater layoutInflater;
 
@@ -58,6 +58,7 @@ public class UserListDialogAdapter extends BaseAdapter {
         return convertView;
     }
 
+    //Holder class for Adapter UI components.
     static class ViewHolder {
         TextView txtApplianceName;
     }

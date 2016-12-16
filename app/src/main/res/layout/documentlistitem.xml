@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dim_padding_10dp"
-    android:paddingRight="@dimen/dim_padding_10dp"
-    android:paddingTop="@dimen/dim_padding_10dp"
+    android:paddingLeft="@dimen/dim_padding_15dp"
+    android:paddingRight="@dimen/dim_padding_15dp"
+    android:paddingTop="@dimen/dim_padding_15dp"
   >
 
 
@@ -17,14 +17,17 @@
         android:layout_centerInParent="true"
         android:src="@drawable/ic_chevron_right_24dp"
         android:id="@+id/imageView2" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_marginLeft="@dimen/dim_padding_5dp"
         android:id="@+id/layoutContent1"
         android:layout_width="match_parent"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/margin_10dp"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvIDLbl"
+            android:id="@+id/tvDocNameLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -32,29 +35,32 @@
             android:layout_alignParentTop="true"
             android:textColor="@color/colorButtonBG"
             android:paddingRight="@dimen/dim_padding_10dp"
-            android:text="@string/id"
+            android:text="@string/Name"
             android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
-            android:id="@+id/tvIDValue"
+            android:id="@+id/tvDocName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvIDLbl"
             android:textSize="@dimen/issue_list_text_size"
             android:textColor="@color/colorWhite"
-            android:text="55" />
+            android:text="12548253.xls" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_marginLeft="@dimen/dim_padding_5dp"
-        android:id="@+id/layoutContent3"
+        android:id="@+id/layoutContentDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
         android:layout_below="@id/layoutContent1">
 
         <TextView
-            android:id="@+id/tvCategoryLbl"
+            android:id="@+id/tvDescriptionLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -62,19 +68,22 @@
             android:layout_alignParentTop="true"
             android:textColor="@color/colorButtonBG"
             android:paddingRight="@dimen/dim_padding_10dp"
-            android:text="@string/Category"
+            android:text="@string/Description"
+            android:textStyle="bold"
+            android:visibility="visible"
             android:textSize="@dimen/issue_list_text_size"/>
 
         <TextView
-            android:id="@+id/tvCategoryValue"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvDescriptionValue"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvCategoryLbl"
             android:textColor="@color/colorWhite"
             android:singleLine="true"
-            android:text="Desktop service"
+            android:gravity="left"
+            android:text="Desktop service process document"
             android:textSize="@dimen/issue_list_text_size"/>
-    </RelativeLayout>
+    </LinearLayout>
 
 
 
@@ -83,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:visibility="visible"
-        android:layout_below="@id/layoutContent3"
+        android:layout_below="@id/layoutContentDescription"
 
       ></include>
 

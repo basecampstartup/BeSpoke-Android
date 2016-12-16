@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 09/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -13,16 +18,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.bespoke.Model.TicketModel;
 import com.bespoke.callback.APIRequestCallback;
+import com.bespoke.commons.Commons;
 import com.bespoke.network.CheckNetwork;
 import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
+import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.TicketStatus;
+import com.bespoke.utils.UserTypeEnum;
 import com.bespoke.utils.Utils;
 
 import org.json.JSONObject;
@@ -31,12 +40,14 @@ import java.util.HashMap;
 
 public class IssueDetailActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback{
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     Button btnCloseTicket,btnEmailUser;
     private TextView tvIdValue,tvShortDescriptionValue,tvDescriptionValue,tvCategoryValue,tvAffectedAreaValue,tvUserValue,tvIssueOpenDateValue,tvAssignedToValue,tvStatusValue;
     private ProgressDialog loader = null;
     TicketModel model;
     boolean isRecordUpdated=false;
+    LinearLayout layoutBtns;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +65,12 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         Intent intent = getIntent();
          model= (TicketModel) intent.getExtras().getSerializable("SelectedModel");
         setDataOnComponents(model);
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        if(UserTypeEnum.NORMALUSER.getId()==Integer.parseInt(usertype))
+        {
+            layoutBtns.setVisibility(View.GONE);
+            invalidateOptionsMenu();
+        }
 
     }
 
@@ -78,9 +95,9 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
      * Initialize the UI components.
      */
     public void initializeComponents() {
-        btnCloseTicket = (Button) findViewById(R.id.btnEmailUser);
+        btnCloseTicket = (Button) findViewById(R.id.btnCloseTicket);
         btnCloseTicket.setOnClickListener(this);
-        btnEmailUser = (Button) findViewById(R.id.btnCloseTicket);
+        btnEmailUser = (Button) findViewById(R.id.btnEmailUser);
         btnEmailUser.setOnClickListener(this);
         tvIdValue=(TextView)findViewById(R.id.tvIDValue);
         tvShortDescriptionValue=(TextView)findViewById(R.id.tvShortDescriptionValue);
@@ -91,6 +108,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         tvIssueOpenDateValue=(TextView)findViewById(R.id.tvIssueOpenDateValue);
         tvAssignedToValue=(TextView)findViewById(R.id.tvAssignedToValue);
         tvStatusValue=(TextView)findViewById(R.id.tvTicketStatusValue);
+        layoutBtns=(LinearLayout)findViewById(R.id.layoutBtns);
     }
 
     /**
@@ -101,8 +119,23 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.issue_detail_menu, menu);
+    //    MenuItem item = menu.findItem(R.id.addAction);
         (menu.findItem(R.id.menuUpdate)).setVisible(true);
+        (menu.findItem(R.id.menuDoc)).setVisible(true);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        MenuItem item = (MenuItem) menu.findItem(R.id.menuUpdate);
+        MenuItem itemDoc = (MenuItem) menu.findItem(R.id.menuDoc);
+        if(UserTypeEnum.NORMALUSER.getId()==Integer.parseInt(usertype))
+        {
+            item.setVisible(false);
+
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     /**
@@ -121,23 +154,49 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
                 i.putExtra("SelectedModel", model);
                 startActivityForResult(i,1);
                 return  true;
+            case R.id.menuDoc:
+                Intent intent=new Intent(IssueDetailActivity.this,DocumentsListActivity.class);
+                intent.putExtra("CategoryID", model.getCat_id());
+                startActivity(intent);
+                return  true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnCloseTicket:
-                confirmationAlertDialog(getResources().getString(R.string.Alert),getResources().getString(R.string.ConfirmCloseTicket));
+                if(model.getTicketstatus()==TicketStatus.CLOSED.getId())
+                {
+                    Toast.makeText(mContext,getResources().getString(R.string.AlreadyClosed),Toast.LENGTH_LONG).show();
+                }
+                else{
+                    confirmationAlertDialog(getResources().getString(R.string.Alert),getResources().getString(R.string.ConfirmCloseTicket));
+                }
+
                 break;
+            case R.id.btnEmailUser:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, AppSPrefs.getString(Commons.EMAIL));
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+                intent.putExtra(Intent.EXTRA_TEXT, "Email body.");
+                startActivity(intent);
+              //  startActivity(Intent.createChooser(intent, "Send Email"));
             default:
                 break;
         }
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
@@ -196,6 +255,11 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(IssueDetailActivity.this.getResources().getColor(R.color.colorBlack));
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
 
@@ -215,6 +279,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -225,7 +290,7 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
 
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -243,6 +308,11 @@ public class IssueDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {

@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Application;
@@ -8,10 +13,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.bespoke.context.ContextHelper;
-
-/**
- * Created by admin on 11/23/2016.
- */
 
 public class BeSpokeApplication extends Application {
     public static final String TAG = BeSpokeApplication.class.getSimpleName();

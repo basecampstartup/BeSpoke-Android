@@ -1,10 +1,14 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 05/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
@@ -26,7 +30,6 @@ import com.android.volley.Request;
 import com.bespoke.Model.Category;
 import com.bespoke.Model.IssueModel;
 import com.bespoke.Model.SubCategoryModel;
-import com.bespoke.Model.TicketModel;
 import com.bespoke.Model.UserModel;
 import com.bespoke.adapter.CategoryListDialogAdapter;
 import com.bespoke.adapter.SubCategoryListDialogAdapter;
@@ -38,14 +41,12 @@ import com.bespoke.servercommunication.APIUtils;
 import com.bespoke.servercommunication.CommunicatorNew;
 import com.bespoke.servercommunication.ResponseParser;
 import com.bespoke.sprefs.AppSPrefs;
-import com.bespoke.utils.DateStyleEnum;
 import com.bespoke.utils.TicketStatus;
+import com.bespoke.utils.UserTypeEnum;
 import com.bespoke.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONObject;
-
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,12 +55,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class AddIssueActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener, com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener {
 
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     private ProgressDialog loader = null;
     private long mLastClickTime = 0;
@@ -85,7 +86,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
 
     private int d = 0, mon = 0, y = 0;
     private static String DISPLAY_DATE_FORMAT = "MMM d, yyyy";
-
+    private  boolean isNormalUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +110,19 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
         }
-
-
+        String usertype=AppSPrefs.getString(Commons.USER_TYPE);
+        if (UserTypeEnum.NORMALUSER.getId() == Integer.parseInt(usertype)) {
+            isNormalUser = true;
+            tvAssignedTo.setText("");
+            tvTicketStatusValue.setText(TicketStatus.OPEN.toString());
+            tvTicketStatusValue.setEnabled(false);
+            tvTicketStatusLbl.setEnabled(false);
+            tvAssignedToLbl.setEnabled(false);
+            tvAssignedTo.setEnabled(false);
+            selectedTicketStatusId =  TicketStatus.OPEN.getId();
+            //selectedTicketStatusId = TicketStatus.getType(TicketStatus.OPEN.toString()).getId();
+            selectedUserId="";
+        }
     }
 
     /**
@@ -141,13 +153,15 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         edtDescription = (EditText) findViewById(R.id.edtDescription);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         btnSubmitTicket = (Button) findViewById(R.id.btnSubmitTicket);
-
         btnSubmitTicket.setOnClickListener(this);
         Utils.hideSoftKeyboard(mContext,edtShortDescription);
         tvUserName.setText(AppSPrefs.getString(Commons.USER_NAME));
 
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -165,6 +179,11 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -189,7 +208,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                         }
                     });
                 } else {
-                    // In case of error occured.
+                    // Show message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -204,7 +223,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                 e.printStackTrace();
             }
         }
-
 
         if (APIUtils.METHOD_GET_ALL_SUB_CATEGORY.equalsIgnoreCase(name)) {
             try {
@@ -221,7 +239,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                         }
                     });
                 } else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -230,14 +248,11 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
-
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
 
         if (APIUtils.METHOD_GET_USER_BY_TYPE.equalsIgnoreCase(name)) {
             try {
@@ -251,10 +266,8 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                             userList = ResponseParser.parseUserResponse(responseObject);
                         }
                     });
-
-
                 } else {
-                    // error msg here
+                    // Show Error message in case of any failure in Server API call.
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -262,13 +275,11 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
 
         if (APIUtils.METHOD_CREATE_TICKET.equalsIgnoreCase(name)) {
             try {
@@ -281,22 +292,21 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                             @Override
                             public void run() {
                                 issueCreatedSucessDialog(getResources().getString(R.string.IssueCreatedSuccessfully));
-
                             }
                         });
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInCreatingTicket));
                             }
                         });
-
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
@@ -305,17 +315,19 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                           //  Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
                         }
                     });
-
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
-
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -328,8 +340,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             }
         });
     }
-
-
 
     //getSubCategoryList by category ID
     public ArrayList<SubCategoryModel> getSubCategoryListByCategory(int categoryId) {
@@ -350,7 +360,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         final Dialog dialog = new Dialog(this);
         View view = getLayoutInflater().inflate(R.layout.list_dialog_layout, null);
         ListView lv = (ListView) view.findViewById(R.id.lstCategory);
-
         CategoryListDialogAdapter applianceListDialogAdapter = new CategoryListDialogAdapter(AddIssueActivity.this, categoryList);
         lv.setAdapter(applianceListDialogAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -371,8 +380,8 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
     }
 
     /**
-     * this is a ovverridded method for components click events.
-     * @param v
+     *  Overridden method to handle clicks of UI components
+     *  @param v
      */
     @Override
     public void onClick(View v) {
@@ -381,11 +390,10 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             case R.id.btnSubmitTicket:
                 if(!validate()) return;
                 if(!validateDropDowns())return;
-
+                //This will handle  multiple click on button at same time.
                 if (SystemClock.elapsedRealtime() - mLastClickTime < Commons.THRESHOLD_TIME_POST_SCREEN) {
                     return;
                 }
-
                 mLastClickTime = SystemClock.elapsedRealtime();
                 processRequestData();
                 Gson gson = new Gson();
@@ -399,10 +407,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                     //Call API Request after check internet connection
                 } else {
                     Utils.alertDialog(mContext,mContext.getString(R.string.Alert),getResources().getString(R.string.MessageNoInternetConnection));
-                    //Toast.makeText(mContext, mContext.getString(R.string.MessageNoInternetConnection), Toast.LENGTH_LONG).show();
                 }
-
-
                 break;
             case R.id.tvSelectCategory:
                 showCategoryDialog();
@@ -416,7 +421,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             case R.id.tvSelectAffectedArea:
                 showSubCategoryDialog();
                 break;
-
             case R.id.tvTicketStatusLbl:
                 showTicketStatusDialog();
                 break;
@@ -439,8 +443,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         }
     }
 
-
-
+    /**
+     * This will show the Sub-Category  list in Dialog.
+     */
     public void showSubCategoryDialog() {
         activeSubCategoryList = getSubCategoryListByCategory(selectedCategoryId);
         if (activeSubCategoryList.size() <= 0) {
@@ -465,8 +470,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dialog.show();
     }
 
-
-
+    /**
+     * This will show the Ticket Status list in Dialog.
+     */
     public void showTicketStatusDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -480,9 +486,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String status = getTicketStatusLabelList().get(position);
                 tvTicketStatusValue.setText(status);
-              //  selectedTicketStatusId = TicketStatus.getType(status).getId();
                 selectedTicketStatusId=TicketStatus.getType(status.toUpperCase()).getId();
-                // selectedTicketStatusId = getTicketStatusIdList().get(position);
                 dialog.dismiss();
             }
         });
@@ -490,8 +494,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dialog.show();
     }
 
-
-
+    /**
+     * This will show the User list in Dialog.
+     */
     public void showUserListDialog() {
 
         final Dialog dialog = new Dialog(this);
@@ -512,6 +517,10 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dialog.show();
     }
 
+    /**
+     * This will return Ticket Status Labels list.
+     * @return
+     */
     public ArrayList<String> getTicketStatusLabelList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("Open");
@@ -520,6 +529,10 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         return list;
     }
 
+    /**
+     * This will return Ticket Status Id list.
+     * @return
+     */
     public ArrayList<String> getTicketStatusIdList() {
         ArrayList<String> list = new ArrayList<>();
         list.add("1");
@@ -528,13 +541,9 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         return list;
     }
 
-    public void callAPI() {
-
-    }
 
     /**
      * This method validate all the required fields.
-     *
      * @return
      */
     public boolean validate() {
@@ -581,10 +590,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
             return false;
         }
-        if (strAssignedTo.equalsIgnoreCase(getResources().getString(R.string.AssignedTotxt))) {
-            Utils.alertDialog(mContext, getResources().getString(R.string.Alert), getResources().getString(R.string.SelectAssignedToAlert));
-            return false;
-        }
         return true;
     }
 
@@ -597,7 +602,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         dpd.show(getFragmentManager(), "Datepickerdialog");
     }
 
-
     /**
      * To set current date and time in date-time text fields
      */
@@ -609,8 +613,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         d = now.get(Calendar.DAY_OF_MONTH);
         Log.v("Calendar11", "At setCurrentDataTimeFields: Time Value Start:" + y + ":" + mon + ":" + d);
         Date startDate = getDateByTime(y, mon, d);
-       //tvSelectIssueOpenDateVal.setText(Utils.formatDate(this, startDate, DateStyleEnum.StyleType.MEDIUM));
-        //tvSelectIssueOpenDateVal.setTag(getCustomDateFormat(startDate));
         String dateString =  y + "-" + (mon + 1) + "-" + d;
         SimpleDateFormat mdyFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         Date dateObj=null;
@@ -626,7 +628,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
 
     /**
      * To get the date as per all the parameters
-     *
      * @param y   : year
      * @param mon :month
      * @param d   :day
@@ -642,7 +643,6 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
 
     /**
      * method to return formatted date with US locale
-     *
      * @param mDate
      * @return
      */
@@ -650,6 +650,15 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
         DateFormat fmt = new SimpleDateFormat(DISPLAY_DATE_FORMAT, Locale.US);
         return fmt.format(mDate);
     }
+
+    /**
+     * Overridden method of date picker to select date.
+     * @param view The view associated with this listener.
+     * @param year The year that was set.
+     * @param monthOfYear The month that was set (0-11) for compatibility
+     *            with {@link java.util.Calendar}.
+     * @param dayOfMonth The day of the month that was set.
+     */
     @Override
     public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String date = dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
@@ -667,15 +676,11 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             }
             String dt=mdyFormat1.format(dateObj);
             tvSelectIssueOpenDateVal.setText(dt);
-         //   previousStartDate = textStartDate.getTag().toString() + " " + textStartTime.getTag().toString();
              selectedDateString=dt;
              setDatePickerDate(dayOfMonth, monthOfYear, year);
-
-
         } catch (Exception e) {
-
+           e.printStackTrace();
         }
-
     }
 
     @Override
@@ -690,7 +695,11 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
             mon = month;
             y = year;
     }
+
     IssueModel model;
+    /**
+     * This will prepare the Request Model.
+     */
     public void processRequestData()
     {
         strShortDescription=edtShortDescription.getText().toString().trim();
@@ -716,10 +725,8 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
 
     /**
      * To display alert dialog for invalid fields
-     *
      * @param message (msg to display)
      */
-
     public void issueCreatedSucessDialog(String message) {
         ;
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -735,7 +742,7 @@ public class AddIssueActivity extends AppCompatActivity implements APIRequestCal
                     }
                 });
         final AlertDialog alertDialog = alertDialogBuilder.create();
-        // show it
+        // Show the Alert dialog.
         alertDialog.show();
     }
 }

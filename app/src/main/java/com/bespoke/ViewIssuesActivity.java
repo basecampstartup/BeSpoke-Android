@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 09/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.ProgressDialog;
@@ -42,6 +47,7 @@ import java.util.HashMap;
 
 public class ViewIssuesActivity extends AppCompatActivity implements APIRequestCallback, View.OnTouchListener{
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     ListView lstIssues;
     private ProgressDialog loader = null;
@@ -124,7 +130,9 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
         }
     }
 
-
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -146,6 +154,11 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
         runOnUiThread(new Runnable() {
@@ -172,11 +185,12 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
                     });
                 }
                 else {
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext, ""+message, Toast.LENGTH_SHORT).show();
+                            Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
 
@@ -188,6 +202,11 @@ public class ViewIssuesActivity extends AppCompatActivity implements APIRequestC
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {

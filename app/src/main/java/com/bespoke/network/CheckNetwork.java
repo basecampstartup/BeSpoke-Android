@@ -1,7 +1,7 @@
 //===============================================================================
-// (c) 2015 eWorkplace Apps.  All rights reserved.
-// Original Author: Dheeraj Nagar
-// Original Date: 12 June 2015
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016.
 //===============================================================================
 package com.bespoke.network;
 
@@ -11,7 +11,7 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 /**
- * class to check network connection
+ * This Class to check network connection.
  */
 public class CheckNetwork {
 
@@ -25,7 +25,6 @@ public class CheckNetwork {
             return false;
         } else {
             if (info.isConnected()) {
-//                Log.d(TAG, " internet connection available...");
                 return true;
             } else {
                 Log.d(TAG, " internet connection");

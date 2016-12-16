@@ -1,17 +1,18 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016.
+//===============================================================================
 package com.bespoke.servercommunication;
 
-/**
- * Created by admin on 11/15/2016.
- */
 public class APIUtils {
-    //live url
+    //Live url
     public static final String BASE_URL ="http://bespoke.rupeshpatil.com/BeSpokeAPI.php?";
+    //Local server url.
     //public static final String BASE_URL ="http://10.0.12.10/bespoke/BeSpokeAPI.php?";
     public static final String METHOD_NAME = "method";
-
     public static final String METHOD_TYPE_POST = "post";
     public static final String METHOD_TYPE_GET = "get";
-
     public static final String METHOD_REGISTER_USER = "RegisterUser";
     public static final String METHOD_GET_USER = "GetUser";
     public static final String METHOD_GET_ALL_USER = "AllUser";
@@ -27,8 +28,7 @@ public class APIUtils {
     public static final String METHOD_CREATE_SUB_CATEGORY = "CreateSubCategory";
     public static final String METHOD_UPDATE_TICKET = "UpdateTicket";
     public static final String METHOD_GET_ALL_REQUEST = "GetAllRequest";
-
-
+    public static final String METHOD_GET_DOCUMENT_BY_CATID = "GetDocumentByCatId";
     public static final String METHOD_UPDATE_DEVICEID = "UpdateDeviceId";
 
     public static final String PARAM_EMAIL = "email";

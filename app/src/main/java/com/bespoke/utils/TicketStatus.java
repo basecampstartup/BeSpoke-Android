@@ -1,7 +1,7 @@
 //===============================================================================
-// (c) 2015 eWorkplace Apps.  All rights reserved.
-// Original Author: Dheeraj Nagar
-// Original Date: 30 Nov 2015
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 05/12/2016.
 //===============================================================================
 package com.bespoke.utils;
 
@@ -19,7 +19,6 @@ public enum TicketStatus {
         TicketStatus(int id) {
             this.id = id;
         }
-
 
         public int getId() {
             return id;
@@ -39,9 +38,12 @@ public enum TicketStatus {
             }
         }
 
-
-        //Return the ChatMessageType enum on the basis of passed string
-        public static TicketStatus getType(String type) {
+    /**
+     * Return the ChatMessageType enum on the basis of passed string
+     * @param type
+     * @return
+     */
+    public static TicketStatus getType(String type) {
             switch (type) {
 
                 case "OPEN":
@@ -57,10 +59,8 @@ public enum TicketStatus {
 
         /**
          * Return the String value of enum
-         *
          * @return
          */
-
         public static TicketStatus keyToEnum(int key) {
             switch (key) {
 

@@ -110,6 +110,7 @@
             android:layout_marginRight="@dimen/dim_padding_20dp"
             android:layout_weight="1"
             android:gravity="center"
+
             android:orientation="vertical">
 
         <ImageView

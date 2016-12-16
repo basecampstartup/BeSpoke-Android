@@ -1,9 +1,12 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016.
+//===============================================================================
 package com.bespoke.servercommunication;
 
-import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -17,21 +20,15 @@ import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
 import com.bespoke.sprefs.AppSPrefs;
 import com.bespoke.utils.Logger;
-
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.client.utils.URLEncodedUtils;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
 
-/**
- * Created by admin on 11/15/2016.
- */
 public class Communicator {
     private final String TAG = getClass().getSimpleName();
     private Context mContext;
@@ -44,7 +41,6 @@ public class Communicator {
         this.mContext = mContext;
         this.params = params;
         this.methodName = methodName;
-
         //network call for api.
         callAPIMethod(methodType);
     }
@@ -68,7 +64,6 @@ public class Communicator {
 
     }
 
-
     /**
      * This method will be used to call server api and redirect the response to respective screen.
      */
@@ -82,7 +77,6 @@ public class Communicator {
         }
         String urlString = URLEncodedUtils.format(list, "utf-8");
         url=url+urlString;
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -115,7 +109,6 @@ public class Communicator {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-
     private void makeJsonObjReq() {
         String url=APIUtils.BASE_URL+APIUtils.METHOD_NAME+"="+methodName;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST, url, prepareRequestObject(),
@@ -137,15 +130,8 @@ public class Communicator {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
             }
         }) {
-            /**
-             * Passing some request headers
-             * */
-          /*  @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                return prepareHeader();
-            }*/
+
         };
-        //  requestString();
         // Adding request to request queue
         BeSpokeApplication.getInstance().addToRequestQueue(jsonObjReq, tag_json_obj);
         // For managing timeout of request.

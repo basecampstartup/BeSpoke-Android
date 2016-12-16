@@ -1,8 +1,9 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 25/11/2016.
+//===============================================================================
 package com.bespoke.Model;
-
-/**
- * Created by admin on 11/25/2016.
- */
 
 public class UserModel {
 

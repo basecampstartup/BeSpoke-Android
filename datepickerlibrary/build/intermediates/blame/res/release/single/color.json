@@ -1,5 +1,21 @@
 [
     {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\color\\mdtp_done_text_color.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\color\\mdtp_done_text_color.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\color\\mdtp_done_text_color_dark.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\color\\mdtp_done_text_color_dark.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\color\\mdtp_date_picker_year_selector.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\color\\mdtp_date_picker_year_selector.xml"
+    },
+    {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\color\\mdtp_date_picker_selector.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\color\\mdtp_date_picker_selector.xml"
+    },
+    {
         "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\release\\color\\mdtp_date_picker_year_selector.xml",
         "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\color\\mdtp_date_picker_year_selector.xml"
     },

@@ -1,8 +1,9 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 28/11/2016.
+//===============================================================================
 package com.bespoke.utils;
-
-/**
- * Created by admin on 11/28/2016.
- */
 
 public enum UserTypeEnum {
 

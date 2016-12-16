@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 12/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Dialog;
@@ -44,6 +49,7 @@ import java.util.HashMap;
 
 public class UpdateRequestActivity extends AppCompatActivity implements View.OnClickListener, APIRequestCallback{
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     Button btnUpdateTicket, btnCancel;
     private TextView tvIdValue,tvShortDescriptionValue,tvDescriptionValue,tvCategoryValue,tvAffectedAreaValue,tvUserValue,tvIssueOpenDateValue,tvAssignedToValue,tvStatusValue;
@@ -66,7 +72,7 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.UpdateTicketBtn));
+        getSupportActionBar().setTitle(getString(R.string.UpdateRequestTitle));
         initializeComponents();
         loader = new ProgressDialog(this);
         loader.setMessage(getString(R.string.MessagePleaseWait));
@@ -151,6 +157,9 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -190,6 +199,10 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
         return list;
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -207,9 +220,13 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call response.
+     * @param name   string call name returned from ajax response on success
+     * @param object object returned from ajax response on success
+     */
     @Override
     public void onSuccess(String name, Object object) {
-
 
         runOnUiThread(new Runnable() {
             @Override
@@ -234,7 +251,7 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
 
 
                 } else {
-                    // error msg here
+                    // Show Error message in case of any failure in Server API call.
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -266,22 +283,21 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
                     }
                     else
                     {
+                        // Show Error message in case of any failure in Server API call.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),getResources().getString(R.string.ErrorInUpdateTicket));
-                                Toast.makeText(mContext, "Error in Updating Ticket status please try later!", Toast.LENGTH_SHORT).show();
                             }
                         });
 
                     }
                 }else {
-                    // In case of error occured.
+                    // Show Error message in case of any failure in Server API call.
                     final String message = responseObject.optString("message");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(mContext, "" + message, Toast.LENGTH_SHORT).show();
                             Utils.alertDialog(mContext,getResources().getString(R.string.ErrorTitle),message);
                         }
                     });
@@ -294,6 +310,11 @@ public class UpdateRequestActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * This is a overridden method to Handle API call in case of Failure response.
+     * @param name   string call name returned from ajax response on failure
+     * @param object returned from ajax response on failure
+     */
     @Override
     public void onFailure(String name, Object object) {
         runOnUiThread(new Runnable() {

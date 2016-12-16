@@ -1,28 +1,27 @@
 package com.bespoke.servercommunication;
-
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 21/11/2016.
+//===============================================================================
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import com.android.volley.Request;
 import com.bespoke.callback.APIRequestCallback;
 import com.bespoke.commons.Commons;
 import com.bespoke.utils.Logger;
 import com.bespoke.utils.Utils;
-
 import org.json.JSONObject;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
 /**
- * Created by admin on 11/15/2016.
+ * This method will Manage API request calling and its responses and redirect to respective Screens
  */
 public class CommunicatorNew {
     private final String TAG = getClass().getSimpleName();
@@ -32,6 +31,13 @@ public class CommunicatorNew {
     private String tag_json_obj = "json_obj_req";
     private HashMap<String, String> header;
 
+    /**
+     * Constructor of class to Initialize Class variables.
+     * @param mContext
+     * @param methodType
+     * @param methodName
+     * @param params
+     */
     public CommunicatorNew(Context mContext, int methodType, String methodName, HashMap<String, String> params) {
         this.mContext = mContext;
         this.params = params;
@@ -40,17 +46,18 @@ public class CommunicatorNew {
         callAPIMethod(methodType, methodName);
     }
 
+    /**
+     * This method will be called when Any Api request call occure.
+     * @param method
+     * @param methodName
+     */
     public void callAPIMethod(int method, String methodName) {
         switch (method) {
             case Request.Method.GET:
-               /* String paramString=prepareRequestObject().toString();
-                if(TextUtils.isEmpty(paramString))paramString="";*/
                 new NetworkAsyncTask(APIUtils.BASE_URL, Commons.GET, methodName,getParamsString(params)).
                         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (APIRequestCallback) mContext);
                 break;
             case Request.Method.POST:
-               /* String paramStringnew=prepareRequestObject().toString();
-                if(TextUtils.isEmpty(paramStringnew)){paramStringnew="";}*/
                 new NetworkAsyncTask(APIUtils.BASE_URL, Commons.POST, methodName, prepareRequestObject().toString()).
                         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (APIRequestCallback) mContext);
                 break;
@@ -58,8 +65,8 @@ public class CommunicatorNew {
     }
 
     /**
-     * Prepares the request json object for given operation
-     *
+     * Prepares the request json object for given Name-Value pair data operation,
+     * for the given method.
      * @return
      */
     public JSONObject prepareRequestObject() {
@@ -88,7 +95,6 @@ public class CommunicatorNew {
             }
             return jsonObject;
         }
-
         if (methodName.equalsIgnoreCase(APIUtils.METHOD_GET_USER_BY_TYPE)) {
             try {
                 jsonObject = new JSONObject(params);
@@ -149,7 +155,9 @@ public class CommunicatorNew {
         return null;
     }
 
-    /*Common thread for background operation for GET, POST, PUT, DELETE, NONE and NONE WITH EMP ID*/
+    /**
+     * AsyncTask Class for background operation for GET, POST.
+     */
     class NetworkAsyncTask extends AsyncTask<APIRequestCallback, Void, Void> {
 
         private URL url = null;
@@ -185,13 +193,12 @@ public class CommunicatorNew {
         }
 
         /*
-        * Common call for Http GET, POST, PUT, DELETE and return callback in calling method
+        * Common call for Http GET, POST return callback in calling method.
         * */
         private Void callHttpMethodInBackground(String i, APIRequestCallback... params) {
             DataOutputStream outputStream;
             DataInputStream input;
             try {
-
                 switch (i) {
                     //For GET
                     case Commons.GET:
@@ -208,6 +215,7 @@ public class CommunicatorNew {
                             urlConn.setRequestProperty("Content-Type", "application/json");
                             urlConn.connect();
                         } catch (Exception e) {
+                            // Redirect to respective screen when any Exception.
                             params[Commons.ZERO].onFailure(methodName, e);
                             e.printStackTrace();
                             Log.e("Exception", e.toString());
@@ -215,11 +223,9 @@ public class CommunicatorNew {
                         break;
                     //For POST
                     case Commons.POST:
-
                         try {
                             url = new URL(APIUtils.BASE_URL + APIUtils.METHOD_NAME + "=" + methodName);
                             urlConn = (HttpURLConnection) url.openConnection();
-                            // urlConn.
                             urlConn.setRequestMethod("POST");
                             urlConn.setDoInput(true);
                             urlConn.setDoOutput(true);
@@ -232,6 +238,7 @@ public class CommunicatorNew {
                             outputStream.flush();
                             outputStream.close();
                         } catch (Exception e) {
+                            // Redirect to respective screen when any Exception.
                             params[Commons.ZERO].onFailure(methodName, e);
                             e.printStackTrace();
                             Log.e("Exception", e.toString());
@@ -239,13 +246,12 @@ public class CommunicatorNew {
                         break;
                 }
             } catch (Exception e) {
+                // Redirect to respective screen when any Exception.
                  params[Commons.ZERO].onFailure(methodName, e);
                 Log.e("Exception", e.toString());
                 e.printStackTrace();
                 return null;
             }
-            // Set up the header types needed to properly transfer JSON
-            // Execute POST
             try {
                 switch (i) {
                     //For GET
@@ -253,10 +259,11 @@ public class CommunicatorNew {
                         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                             Log.i("HARI1", "getResponseCode END");
                             String out = Utils.convertResponseToString(urlConn.getInputStream());
+                            // Redirect to respective screen when request Success.
                             params[0].onSuccess(methodName, out);
                         } else {
+                            // Redirect to respective screen when failure.
                             params[Commons.ZERO].onFailure(methodName,urlConn);
-                            //handle error
                         }
                         break;
 
@@ -265,15 +272,17 @@ public class CommunicatorNew {
                         if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                             Log.i("HARI1", "getResponseCode END");
                             String out = Utils.convertResponseToString(urlConn.getInputStream());
+                            // Redirect to respective screen when request Success.
                             params[0].onSuccess(methodName, out);
                         } else {
+                            // Redirect to respective screen when any Exception.
                             params[Commons.ZERO].onFailure(methodName,urlConn);
-                            //handle error
                         }
                             break;
                 }
 
             } catch (Exception e) {
+                // Redirect to respective screen when any Exception.
                 params[Commons.ZERO].onFailure(methodName, e);
                 e.printStackTrace();
                 Log.e("Exception", e.toString());
@@ -282,6 +291,11 @@ public class CommunicatorNew {
         }
     }
 
+    /**
+     * Create a String for appending request parameters in URL when GET request is there.
+     * @param map
+     * @return
+     */
     private String getParamsString(HashMap<String, String> map) {
         StringBuilder sb = new StringBuilder();
         if(map.size()>0){

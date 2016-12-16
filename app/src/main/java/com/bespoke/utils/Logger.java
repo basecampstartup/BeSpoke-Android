@@ -1,10 +1,11 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 18/11/2016.
+//===============================================================================
 package com.bespoke.utils;
 
 import android.util.Log;
-
-/**
- * Created by admin on 11/9/2016.
- */
 
 public class Logger {
     private static boolean loggerEnable = true;

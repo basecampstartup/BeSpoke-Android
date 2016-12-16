@@ -1,4 +1,8 @@
-
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 21/11/2016.
+//===============================================================================
 package com.bespoke.utils;
 
 import java.util.regex.Matcher;
@@ -10,7 +14,6 @@ public class EmailSyntaxChecker {
 
     /**
      * Method to validate the input email.
-     *
      * @param inputEmail The email to be validated.
      * @return A boolean if the email is valid or not
      */

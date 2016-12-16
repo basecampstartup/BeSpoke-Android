@@ -24,7 +24,7 @@
     <string name="CreateAccount">Create Account</string>
     <string name="ResetPassword">Reset Password</string>
     <string name="AlreadyRegistered"><u>Already Registered? Login here</u></string>
-    <string name="title_activity_home">DashBoard</string>
+    <string name="title_activity_home">Dashboard</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -33,36 +33,36 @@
 
 
     <string name="LeftPanelHome">Home</string>
-    <string name="LeftPanelViewIssues">View Issues</string>
-    <string name="LeftPanelViewRequests">View Requests</string>
+    <string name="LeftPanelViewIssues">Issues</string>
+    <string name="LeftPanelViewRequests">Requests</string>
     <string name="LeftPanelDocuments">Documents</string>
     <string name="LeftPanelReports">Reports</string>
     <string name="LeftPanelCategory">Category</string>
     <string name="LeftPanelSettings">Settings</string>
     <string name="LeftPanelLogout">Logout</string>
     <string name="MessagePleaseWait">Please wait...</string>
-
-    <string name="IssuesDetail">View Details</string>
+    <string name="RequestDetail">Request Description</string>
+    <string name="IssuesDetail">Issue Description</string>
     <string name="id">ID:</string>
     <string name="idtxt">Id</string>
-    <string name="ShortDescription">Short Description:</string>
-    <string name="ShortDescriptiontxt">Short Description</string>
+    <string name="ShortDescription">Short description:</string>
+    <string name="ShortDescriptiontxt">Short description</string>
     <string name="Description">Description:</string>
     <string name="Descriptiontxt">Description</string>
     <string name="Category">Category:</string>
     <string name="Categorytxt">Category</string>
-    <string name="AffectedArea">Affected Area:</string>
-    <string name="AffectedAreatxt">Affected Area</string>
+    <string name="AffectedArea">Affected area:</string>
+    <string name="AffectedAreatxt">Affected area</string>
     <string name="User">User:</string>
     <string name="Usertxt">User</string>
-    <string name="IssueOpenDate">Issue Open Date:</string>
+    <string name="IssueOpenDate">Issue open date:</string>
     <string name="IssueOpenDatetxt">Issue Open Date</string>
     <string name="SelectIssueOpenDatetxt">Select Issue Open Date:</string>
-    <string name="AssignedTo">Assigned To:</string>
-    <string name="AssignedTotxt">Assigned To</string>
+    <string name="AssignedTo">Assigned to:</string>
+    <string name="AssignedTotxt">Assigned to</string>
     <string name="Status">Status:</string>
-    <string name="TicketStatus">Ticket Status:</string>
-    <string name="TicketStatustxt">Ticket Status</string>
+    <string name="TicketStatus">Ticket status:</string>
+    <string name="TicketStatustxt">Ticket status</string>
     <string name="CommonOK">OK</string>
     <string name="RegisterdSuccessfully">User Registerd Successfully!</string>
 
@@ -74,8 +74,8 @@
     <string name="DisablePasscodeMsg">Enter Passcode to Disable the Touch Id.</string>
     <string name="touchEnabled">Touch Enabled</string>
 
-    <string name="CloseTicketBtn">Close Ticket</string>
-    <string name="EmailUserBtn">Email User</string>
+    <string name="CloseTicketBtn">Close ticket</string>
+    <string name="EmailUserBtn">Email user</string>
     <string name="AddIssue">Add Issue</string>
     <string name="SubmitTicketBtn">Submit Ticket</string>
     <string name="EmailBtn">Email</string>
@@ -104,7 +104,7 @@
     <string name="title_activity_chart">ChartActivity</string>
     <string name="CommonYes">Yes</string>
     <string name="CommonNo">No</string>
-    <string name="ConfirmCloseTicket">Do you want to close this Ticket!</string>
+    <string name="ConfirmCloseTicket">Do you want to close issue!</string>
 
     <string name="ErrorInCreatingTicket">Error in Creating issue please try again later!</string>
     <string name="IssueCreatedSuccessfully">Your issue created successfully!</string>
@@ -114,7 +114,9 @@
     <string name="TicketUpdatedSuccessfullyMsg">Ticket Updated  successfully!</string>
 
     <string name="LogoutConfirmationMessage">Do you want to logout?</string>
-    <string name="UpdateTicketBtn">Update Ticket</string>
+    <string name="UpdateTicketBtn">Update ticket</string>
+    <string name="UpdateIssueTitle">Update Issue</string>
+    <string name="UpdateRequestTitle">Update Request</string>
     <string name="Edit">Edit</string>
 
     <string name="CreateCategory">Create Category</string>
@@ -124,6 +126,11 @@
     <string name="EnterCategoryName">Enter Category Name</string>
     <string name="CategoryCreatedSuccessfully">Category created successfully!</string>
     <string name="SubCategoryCreatedSuccessfully">Subcategory created successfully!</string>
-
-
+    <string name="DocumentCategory">Document Category</string>
+    <string name="Documents">Document List</string>
+    <string name="NoDocumentsAvailable">No Document Available</string>
+    <string name="Name">Name:</string>
+    <string name="Submit">Submit</string>
+    <string name="AlreadyClosed">Issue is already closed!</string>
+    <string name="DocCategory">Document\'s Category</string>
 </resources>

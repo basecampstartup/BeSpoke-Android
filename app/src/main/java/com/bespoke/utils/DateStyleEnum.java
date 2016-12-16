@@ -1,7 +1,7 @@
 //===============================================================================
-// (c) 2015 eWorkplace Apps.  All rights reserved.
-// Original Author: Dheeraj Nagar
-// Original Date: 30 Nov 2015
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 23/11/2016.
 //===============================================================================
 package com.bespoke.utils;
 
@@ -10,12 +10,10 @@ package com.bespoke.utils;
  */
 public class DateStyleEnum {
     public enum StyleType {
-
         SHORT(0),
         MEDIUM(1),
         LONG(2),
         DAY_MONTH(3);
-
 
         private int id;
 

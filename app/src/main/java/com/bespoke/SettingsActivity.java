@@ -1,3 +1,8 @@
+//===============================================================================
+// (c) 2016 Basecamp Startups Pvt. Ltd.  All rights reserved.
+// Original Author: Ankur Sharma
+// Original Date: 06/12/2016
+//===============================================================================
 package com.bespoke;
 
 import android.app.Dialog;
@@ -17,6 +22,7 @@ import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar mToolbar;
+    /** context of current Activity */
     private Context mContext;
     ImageView ivSwitchBtn;
     @Override
@@ -46,6 +52,9 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    /**
+     * Overridden method will execute when user click on back button of device.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -61,6 +70,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         TextView txtHeading = (TextView) view.findViewById(R.id.tvDialogHeading);
         txtHeading.setText(msg);
         btnCancel.setOnClickListener(new View.OnClickListener() {
+            /**
+             *  Overridden method to handle clicks of UI components
+             *  @param v
+             */
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -73,6 +86,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    /**
+     *  Overridden method to handle clicks of UI components
+     *  @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

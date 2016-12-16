@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\layout-w270dp-h560dp-v13\\mdtp_date_picker_dialog.xml",
+        "source": "E:\\BeSpoke Workspace\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\layout-w270dp-h560dp\\mdtp_date_picker_dialog.xml"
+    },
+    {
         "merged": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\build\\intermediates\\res\\merged\\debug\\layout-w270dp-h560dp-v13\\mdtp_date_picker_dialog.xml",
         "source": "E:\\AndroidStudioProjects\\IOT\\BeSpoke-Android\\datepickerlibrary\\src\\main\\res\\layout-w270dp-h560dp\\mdtp_date_picker_dialog.xml"
     }
